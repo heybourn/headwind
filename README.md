@@ -29,9 +29,7 @@ You must have [Node.js](https://nodejs.org/en/) and [vsce](https://github.com/mi
     ```sh
     vsce package
     ```
-    
-4. Open Visual Studio Code and open the 'Extensions' menu. Select the three dots and 'Install from VSIX'. Select the compiled Headwind extension and restart the app.
 
 # Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING.md](.github/CONTRIBUTING.md).
