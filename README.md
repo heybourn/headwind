@@ -2,6 +2,8 @@
 
 Headwind is an opinionated class sorter for TailwindCSS. It enforces consistent ordering of classes by parsing your code and reprinting class tags to follow a given order.
 
+<img src="https://raw.githubusercontent.com/heybourn/headwind/master/img/explainer.gif" alt="Explainer">
+
 # Getting started
 
 You must have Node.js and vsce installed before working with Headwind. You can learn more about these tools and working with Visual Studio Code [here](https://code.visualstudio.com/api/working-with-extensions/publishing-extension).

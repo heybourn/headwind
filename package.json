@@ -2,8 +2,22 @@
     "name": "headwind",
     "displayName": "Headwind",
     "description": "An opinionated class sorter for TailwindCSS",
+    "keywords": [
+        "tailwind",
+        "tailwindcss",
+        "css",
+        "sort",
+        "sorter",
+        "vscode"
+      ],
+    "galleryBanner": {
+        "color": "#f1f5f8"
+      },
+    "icon": "icon.png",
     "version": "0.0.1",
     "publisher": "heybourn",
+    "license": "MIT",
+    "author": "Ryan Heybourn <ryan@heybourn.com>",
     "repository": "https://github.com/heybourn/headwind",
     "engines": {
         "vscode": "^1.32.0"
