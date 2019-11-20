@@ -2,36 +2,26 @@
 
 Headwind is an opinionated TailwindCSS class sorter for Visual Studio Code. It enforces consistent ordering of classes by parsing your code and reprinting class tags to follow a given order.
 
-<img src="https://raw.githubusercontent.com/heybourn/headwind/master/img/explainer.gif" alt="Explainer">
+**[Get it from the VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=heybourn.headwind)**
 
-# Getting started
+<img src="img/explainer.gif" alt="Explainer" width="750px">
 
-You must have [Node.js](https://nodejs.org/en/) and [vsce](https://github.com/microsoft/vscode-vsce) installed before working with Headwind. You can learn more about these tools and working with Visual Studio Code [here](https://code.visualstudio.com/api/working-with-extensions/publishing-extension).
+# Usage
 
-1. Navigate to your Headwind folder
+You can install Headwind via the VS Code Marketplace, or package it yourself using [vsce](https://code.visualstudio.com/api/working-with-extensions/publishing-extension). Headwind works globally once installed and can be triggered by:
 
-    ```sh
-    cd headwind
-    ```
+* Pressing CMD + Shift + T on Mac
+* Pressing CTRL + ALT + T on Windows
+* Running 'Sort TailwindCSS Classes' via the Command Palette
 
-2. Install the dependencies
+Performing one of these actions will automatically sort all classes within an opened document. Any custom/unknown classes will be moved to the end of the class list.
 
-    ```sh
-    npm install
-    ```
+# Customisation
 
-3. Compile the extension
+Headwind ships with a default class order (located in [package.json](package.json)). You can edit this to your liking on the extension settings page.
 
-    ```sh
-    npm run compile
-    ```
-
-4. Package the extension
-
-    ```sh
-    vsce package
-    ```
+<img src="img/settings.png" alt="Settings" width="750px">
 
 # Contributing
 
-See [CONTRIBUTING.md](.github/CONTRIBUTING.md).
+Headwind is open source and contributions are always welcome. If you're interested in submitting a pull request, please take a moment to review [CONTRIBUTING.md](.github/CONTRIBUTING.md).
