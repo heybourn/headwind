@@ -1,6 +1,6 @@
 # Headwind
 
-Headwind is an opinionated class sorter for TailwindCSS. It enforces consistent ordering of classes by parsing your code and reprinting class tags to follow a given order.
+Headwind is an opinionated class sorter for TailwindCSS, built as a Visual Studio Code extension. It enforces consistent ordering of classes by parsing your code and reprinting class tags to follow a given order.
 
 # Getting started
 
