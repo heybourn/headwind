@@ -4,7 +4,7 @@ Headwind is an opinionated TailwindCSS class sorter for Visual Studio Code. It e
 
 **[Get it from the VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=heybourn.headwind)**
 
-<img src="img/explainer.gif" alt="Explainer" width="750px">
+<img src="https://github.com/heybourn/headwind/blob/master/img/explainer.gif?raw=true" alt="Explainer" width="750px">
 
 # Usage
 
@@ -20,7 +20,7 @@ Performing one of these actions will automatically sort all classes within an op
 
 Headwind ships with a default class order (located in [package.json](package.json)). You can edit this to your liking on the extension settings page.
 
-<img src="img/settings.png" alt="Settings" width="750px">
+<img src="https://github.com/heybourn/headwind/blob/master/img/settings.png?raw=true" alt="Settings" width="750px">
 
 # Contributing
 
