@@ -1258,10 +1258,18 @@
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
         "lint": "tslint ./src/*.ts",
-        "watch": "tsc -watch -p ./"
+        "watch": "tsc -watch -p ./",
+        "test": "mocha -r ts-node/register src/**/*.spec.ts"
     },
     "devDependencies": {
+        "@types/chai": "^4.2.5",
+        "@types/lodash": "^4.14.149",
+        "@types/mocha": "^5.2.7",
         "@types/node": "^6.0.40",
+        "chai": "^4.2.0",
+        "lodash": "^4.17.15",
+        "mocha": "^6.2.2",
+        "ts-node": "^8.5.2",
         "tslint": "^5.16.0",
         "typescript": "^3.5.1",
         "@types/vscode": "^1.32.0"
