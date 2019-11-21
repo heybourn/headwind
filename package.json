@@ -1258,12 +1258,22 @@
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
         "lint": "tslint ./src/*.ts",
-        "watch": "tsc -watch -p ./"
+        "watch": "tsc -watch -p ./",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage"
+        
     },
     "devDependencies": {
+        "@types/jest": "^24.0.23",
+        "@types/lodash": "^4.14.149",
         "@types/node": "^6.0.40",
+        "@types/vscode": "^1.32.0",
+        "jest": "^24.9.0",
+        "lodash": "^4.17.15",
+        "ts-jest": "^24.1.0",
+        "ts-node": "^8.5.2",
         "tslint": "^5.16.0",
-        "typescript": "^3.5.1",
-        "@types/vscode": "^1.32.0"
+        "typescript": "^3.5.1"
     }
 }
