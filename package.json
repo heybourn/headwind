@@ -9,12 +9,12 @@
         "sort",
         "sorter",
         "vscode"
-      ],
+    ],
     "galleryBanner": {
         "color": "#f1f5f8"
-      },
+    },
     "icon": "icon.png",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "publisher": "heybourn",
     "license": "MIT",
     "author": "Ryan Heybourn <ryan@heybourn.com>",
