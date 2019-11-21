@@ -23,7 +23,7 @@
         "vscode": "^1.32.0"
     },
     "categories": [
-        "Formatter"
+        "Other"
     ],
     "activationEvents": [
         "onCommand:headwind.sortTailwindClasses"
