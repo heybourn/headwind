@@ -1,6 +1,5 @@
 import { sortClassString } from './utils';
-import { expect } from 'chai';
-import 'mocha';
+import 'jest';
 import * as _ from 'lodash';
 
 const pjson = require('../package.json');
@@ -14,6 +13,6 @@ const randomizedClassString = _.shuffle(sortOrder).join(' ');
 describe('sortClassString', () => {
 	it('should return a sorted class list string', () => {
 		const result = sortClassString(randomizedClassString, sortOrder);
-		expect(result).to.equal(sortOrder.join(' '));
+		expect(result).toBe(sortOrder.join(' '));
 	});
 });
