@@ -1,4 +1,4 @@
-import { sortClassString } from './utils';
+import { sortClassString } from '../src/utils';
 import 'jest';
 import * as _ from 'lodash';
 
