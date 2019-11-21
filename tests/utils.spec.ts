@@ -20,7 +20,7 @@ describe('sortClassString', () => {
 describe('removeDuplicates', () => {
 	it('should remove duplicate classes', () => {
 		const randomizedAndDuplicatedClassString =
-			randomizedClassString + ' flex absolute relative flex-wrap';
+			randomizedClassString + ' ' + _.shuffle(sortOrder).join(' ');
 
 		const result = sortClassString(
 			randomizedAndDuplicatedClassString,
