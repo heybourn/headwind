@@ -9,10 +9,10 @@
         "sort",
         "sorter",
         "vscode"
-      ],
+    ],
     "galleryBanner": {
         "color": "#f1f5f8"
-      },
+    },
     "icon": "icon.png",
     "version": "0.0.1",
     "publisher": "heybourn",
@@ -1254,7 +1254,13 @@
                         ],
                         "description": "Sort order: A string array that determines the default sort order.",
                         "scope": "window"
-                    }
+										},
+										"headwind.classRegex": {
+											"type": "string",
+											"default": "\\bclass(?:Name)*\\s*=\\s*([\\\"\\']([_a-zA-Z0-9\\s\\-\\:]+)[\\\"\\'])",
+											"description": "Class regex: A string that determines the default regex to search a class attribute.",
+											"scope": "window"
+										}
                 }
             }
         ]
