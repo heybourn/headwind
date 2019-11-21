@@ -96,7 +96,6 @@
                             "content-center",
                             "content-end",
                             "content-between",
-                            "content-between",
                             "self-auto",
                             "self-start",
                             "self-center",
@@ -1225,7 +1224,6 @@
                             "cursor-default",
                             "cursor-pointer",
                             "cursor-wait",
-                            "cursor-wait",
                             "cursor-move",
                             "cursor-not-allowed",
                             "pointer-events-none",
@@ -1241,16 +1239,7 @@
                             "sr-only",
                             "not-sr-only",
                             "fill-current",
-                            "stroke-current",
-                            "hidden",
-                            "block",
-                            "inline-block",
-                            "flex",
-                            "inline-flex",
-                            "inline",
-                            "table",
-                            "table-row",
-                            "table-cell"
+                            "stroke-current"
                         ],
                         "description": "Sort order: A string array that determines the default sort order.",
                         "scope": "window"
