@@ -1,6 +1,6 @@
 # Headwind
 
-Headwind is an opinionated TailwindCSS class sorter for Visual Studio Code. It enforces consistent ordering of classes by parsing your code and reprinting class tags to follow a given order.
+Headwind is an opinionated Tailwind CSS class sorter for Visual Studio Code. It enforces consistent ordering of classes by parsing your code and reprinting class tags to follow a given order.
 
 **[Get it from the VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=heybourn.headwind)**
 
@@ -12,7 +12,7 @@ You can install Headwind via the VS Code Marketplace, or package it yourself usi
 
 * Pressing CMD + Shift + T on Mac
 * Pressing CTRL + ALT + T on Windows
-* Running 'Sort TailwindCSS Classes' via the Command Palette
+* Running 'Sort Tailwind CSS Classes' via the Command Palette
 
 Performing one of these actions will automatically sort all classes within an opened document. Any custom/unknown classes will be moved to the end of the class list.
 

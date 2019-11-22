@@ -1,7 +1,7 @@
 {
     "name": "headwind",
     "displayName": "Headwind",
-    "description": "An opinionated class sorter for TailwindCSS",
+    "description": "An opinionated class sorter for Tailwind CSS",
     "keywords": [
         "tailwind",
         "tailwindcss",
@@ -33,7 +33,7 @@
         "commands": [
             {
                 "command": "headwind.sortTailwindClasses",
-                "title": "Sort TailwindCSS Classes"
+                "title": "Sort Tailwind CSS Classes"
             }
         ],
         "keybindings": [
