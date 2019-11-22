@@ -16,3 +16,16 @@ describe('sortClassString', () => {
 		expect(result).toBe(sortOrder.join(' '));
 	});
 });
+
+describe('removeDuplicates', () => {
+	it('should remove duplicate classes', () => {
+		const randomizedAndDuplicatedClassString =
+			randomizedClassString + ' ' + _.shuffle(sortOrder).join(' ');
+
+		const result = sortClassString(
+			randomizedAndDuplicatedClassString,
+			sortOrder
+		);
+		expect(result).toBe(sortOrder.join(' '));
+	});
+});

@@ -1262,7 +1262,6 @@
         "test": "jest",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage"
-        
     },
     "devDependencies": {
         "@types/jest": "^24.0.23",
