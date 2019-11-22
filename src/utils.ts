@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-
 /**
  * Sorts a string of CSS classes according to a predefined order.
  * @param classString The string to sort
@@ -29,4 +27,6 @@ const sortClassArray = (
 	...classArray.filter(el => sortOrder.indexOf(el) === -1) // prepend the classes that were not in the sort order
 ];
 
-const removeDuplicates = (classArray: string[]): string[] => _.uniq(classArray);
+const removeDuplicates = (classArray: string[]): string[] => [
+	...new Set(classArray)
+];
