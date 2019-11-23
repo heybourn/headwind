@@ -1246,7 +1246,7 @@
                     },
                     "headwind.classRegex": {
                         "type": "string",
-                        "default": "\\bclass(?:Name)*\\s*=\\s*([\\\"\\']([_a-zA-Z0-9\\s\\-\\:]+)[\\\"\\'])",
+                        "default": "\\bclass(?:Name)*\\s*=\\s*([\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])",
                         "description": "Class regex: A string that determines the default regex to search a class attribute.",
                         "scope": "window"
                     }
