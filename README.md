@@ -1,8 +1,8 @@
-# Headwind
+# Headwind  <img src="https://github.com/heybourn/headwind/blob/master/icon.png?raw=true" width="50">
 
 [![CircleCI](https://circleci.com/gh/heybourn/headwind.svg?style=svg)](https://circleci.com/gh/heybourn/headwind)
 
-Headwind is an opinionated Tailwind CSS class sorter for Visual Studio Code. It enforces consistent ordering of classes by parsing your code and reprinting class tags to follow a given order.
+> Headwind is an opinionated Tailwind CSS class sorter for Visual Studio Code. It enforces consistent ordering of classes by parsing your code and reprinting class tags to follow a given order.
 
 **[Get it from the VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=heybourn.headwind)**
 
@@ -31,7 +31,7 @@ A string array that determines the default sort order.
 ### `headwind.classRegex`:
 
 A string that determines the default regex to search a class attribute.
-The default is set to `\bclass(?:Name)*\s*=\s*([\"\']([_a-zA-Z0-9\s\-\:]+)[\"\'])` but can be customized to fit your needs.
+The default is set to `\bclass(?:Name)*\\s*=\\s*([\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])` but can be customized to fit your needs.
 
 Make sure if a new group is created that this is non-capturing by using `(?:)`.
 
