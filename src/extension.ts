@@ -4,8 +4,11 @@ import { commands, workspace, ExtensionContext, Range } from 'vscode';
 
 import { sortClassString } from './utils';
 
-const sortOrder = workspace.getConfiguration().get('headwind.defaultSortOrder');
-const HTMLClassAtrributeRegex = /\bclass\s*=\s*([\"\']([_a-zA-Z0-9\s\-\:]+)[\"\'])/gi;
+const config = workspace.getConfiguration();
+const configRegex: string = config.get('headwind.classRegex') || '';
+
+const sortOrder = config.get('headwind.defaultSortOrder');
+const HTMLClassAtrributeRegex = new RegExp(configRegex, 'gi');
 
 export function activate(context: ExtensionContext) {
 	let disposable = commands.registerTextEditorCommand(

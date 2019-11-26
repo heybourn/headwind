@@ -1,7 +1,7 @@
 {
     "name": "headwind",
     "displayName": "Headwind",
-    "description": "An opinionated class sorter for TailwindCSS",
+    "description": "An opinionated class sorter for Tailwind CSS",
     "keywords": [
         "tailwind",
         "tailwindcss",
@@ -9,12 +9,12 @@
         "sort",
         "sorter",
         "vscode"
-      ],
+    ],
     "galleryBanner": {
         "color": "#f1f5f8"
-      },
+    },
     "icon": "icon.png",
-    "version": "0.0.1",
+    "version": "1.5.0",
     "publisher": "heybourn",
     "license": "MIT",
     "author": "Ryan Heybourn <ryan@heybourn.com>",
@@ -33,7 +33,7 @@
         "commands": [
             {
                 "command": "headwind.sortTailwindClasses",
-                "title": "Sort TailwindCSS Classes"
+                "title": "Sort Tailwind CSS Classes"
             }
         ],
         "keybindings": [
@@ -78,6 +78,8 @@
                             "z-40",
                             "z-50",
                             "z-auto",
+                            "flex",
+                            "inline-flex",
                             "flex-row",
                             "flex-row-reverse",
                             "flex-col",
@@ -93,7 +95,6 @@
                             "content-start",
                             "content-center",
                             "content-end",
-                            "content-between",
                             "content-between",
                             "self-auto",
                             "self-start",
@@ -133,8 +134,6 @@
                             "hidden",
                             "block",
                             "inline-block",
-                            "flex",
-                            "inline-flex",
                             "inline",
                             "table",
                             "table-row",
@@ -1229,7 +1228,6 @@
                             "cursor-default",
                             "cursor-pointer",
                             "cursor-wait",
-                            "cursor-wait",
                             "cursor-move",
                             "cursor-not-allowed",
                             "pointer-events-none",
@@ -1245,18 +1243,15 @@
                             "sr-only",
                             "not-sr-only",
                             "fill-current",
-                            "stroke-current",
-                            "hidden",
-                            "block",
-                            "inline-block",
-                            "flex",
-                            "inline-flex",
-                            "inline",
-                            "table",
-                            "table-row",
-                            "table-cell"
+                            "stroke-current"
                         ],
                         "description": "Sort order: A string array that determines the default sort order.",
+                        "scope": "window"
+                    },
+                    "headwind.classRegex": {
+                        "type": "string",
+                        "default": "\\bclass(?:Name)*\\s*=\\s*([\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])",
+                        "description": "Class regex: A string that determines the default regex to search a class attribute.",
                         "scope": "window"
                     }
                 }
@@ -1267,12 +1262,21 @@
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
         "lint": "tslint ./src/*.ts",
-        "watch": "tsc -watch -p ./"
+        "watch": "tsc -watch -p ./",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage"
     },
     "devDependencies": {
+        "@types/jest": "^24.0.23",
+        "@types/lodash": "^4.14.149",
         "@types/node": "^6.0.40",
+        "@types/vscode": "^1.32.0",
+        "jest": "^24.9.0",
+        "lodash": "^4.17.15",
+        "ts-jest": "^24.1.0",
+        "ts-node": "^8.5.2",
         "tslint": "^5.16.0",
-        "typescript": "^3.5.1",
-        "@types/vscode": "^1.32.0"
+        "typescript": "^3.5.1"
     }
 }
