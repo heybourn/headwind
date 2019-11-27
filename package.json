@@ -14,7 +14,7 @@
         "color": "#f1f5f8"
     },
     "icon": "icon.png",
-    "version": "1.5.3",
+    "version": "1.5.4",
     "publisher": "heybourn",
     "license": "MIT",
     "author": "Ryan Heybourn <ryan@heybourn.com>",
@@ -1260,7 +1260,7 @@
                         "description": "A flag which indicates whether Headwind should remove duplicate classes",
                         "type": "boolean",
                         "scope": "window"
-                      }
+                    }
                 }
             }
         ]
