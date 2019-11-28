@@ -1255,6 +1255,12 @@
                         "description": "Class regex: A string that determines the default regex to search a class attribute.",
                         "scope": "window"
                     },
+                    "headwind.runOnSave": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "An option which controls whether headwind will automatically run on save",
+                        "scope": "window"
+                    },
                     "headwind.enableRemoveDuplicates": {
                         "default": true,
                         "description": "A flag which indicates whether Headwind should remove duplicate classes",
