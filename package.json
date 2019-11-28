@@ -1254,7 +1254,13 @@
                         "default": "\\bclass(?:Name)*\\s*=\\s*([\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])",
                         "description": "Class regex: A string that determines the default regex to search a class attribute.",
                         "scope": "window"
-                    }
+                    },
+                    "headwind.enableRemoveDuplicates": {
+                        "default": true,
+                        "description": "A flag which indicates whether Headwind should remove duplicate classes",
+                        "type": "boolean",
+                        "scope": "window"
+                      }
                 }
             }
         ]

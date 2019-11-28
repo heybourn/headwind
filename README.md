@@ -35,6 +35,12 @@ The default is set to `\bclass(?:Name)*\\s*=\\s*([\\\"\\']([_a-zA-Z0-9\\s\\-\\:\
 
 Make sure if a new group is created that this is non-capturing by using `(?:)`.
 
+### `headwind.enableRemoveDuplicates`:
+
+By default headwind will remove duplicated class names. With this option you can disable duplicate class removals. 
+
+`"headwind.enableRemoveDuplicates": false`
+
 # Contributing
 
 Headwind is open source and contributions are always welcome. If you're interested in submitting a pull request, please take a moment to review [CONTRIBUTING.md](.github/CONTRIBUTING.md).

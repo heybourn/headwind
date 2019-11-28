@@ -8,6 +8,9 @@ const config = workspace.getConfiguration();
 const configRegex: string = config.get('headwind.classRegex') || '';
 
 const sortOrder = config.get('headwind.defaultSortOrder');
+
+const shouldRemoveDuplicates = config.get('headwind.enableRemoveDuplicates');
+
 const HTMLClassAtrributeRegex = new RegExp(configRegex, 'gi');
 
 export function activate(context: ExtensionContext) {
@@ -34,7 +37,13 @@ export function activate(context: ExtensionContext) {
 
 				edit.replace(
 					range,
-					sortClassString(valueMatch, Array.isArray(sortOrder) ? sortOrder : [])
+					sortClassString(
+						valueMatch,
+						Array.isArray(sortOrder) ? sortOrder : [],
+						typeof shouldRemoveDuplicates === 'boolean'
+							? shouldRemoveDuplicates
+							: true
+					)
 				);
 			}
 		}
