@@ -8,8 +8,8 @@ const config = workspace.getConfiguration();
 const configRegex: string = config.get('headwind.classRegex') || '';
 
 const sortOrder = config.get('headwind.defaultSortOrder');
-const shouldRemoveDuplicates: boolean =
-	config.get('headwind.enableRemoveDuplicates') || true;
+
+const shouldRemoveDuplicates = config.get('headwind.enableRemoveDuplicates');
 
 const HTMLClassAtrributeRegex = new RegExp(configRegex, 'gi');
 
@@ -40,7 +40,9 @@ export function activate(context: ExtensionContext) {
 					sortClassString(
 						valueMatch,
 						Array.isArray(sortOrder) ? sortOrder : [],
-						shouldRemoveDuplicates
+						typeof shouldRemoveDuplicates === 'boolean'
+							? shouldRemoveDuplicates
+							: true
 					)
 				);
 			}
