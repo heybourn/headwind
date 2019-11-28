@@ -7,14 +7,18 @@
  */
 export const sortClassString = (
 	classString: string,
-	sortOrder: string[]
+	sortOrder: string[],
+	shouldRemoveDuplicates: boolean
 ): string => {
-	const classArray = classString.split(/\s+/g);
+	let classArray = classString.split(/\s+/g);
 
-	const duplicatesRemoved = removeDuplicates(classArray);
-	const sortedClassArray = sortClassArray(duplicatesRemoved, sortOrder);
+	if (shouldRemoveDuplicates) {
+		classArray = removeDuplicates(classArray);
+	}
 
-	return sortedClassArray.join(' ');
+	classArray = sortClassArray(classArray, sortOrder);
+
+	return classArray.join(' ');
 };
 
 const sortClassArray = (
