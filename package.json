@@ -26,6 +26,7 @@
         "Other"
     ],
     "activationEvents": [
+        "workspaceContains:**/tailwind.config.js",
         "onCommand:headwind.sortTailwindClasses"
     ],
     "main": "./out/extension",
