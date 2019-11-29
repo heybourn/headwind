@@ -1,12 +1,9 @@
 'use strict';
 
 import { commands, workspace, ExtensionContext, Range, window } from 'vscode';
-
 import { sortClassString } from './utils';
-
-const { exec } = require('child_process');
-
-const { rustyWindPath } = require('rustywind');
+import { spawn } from 'child_process';
+import { rustyWindPath } from 'rustywind';
 
 const config = workspace.getConfiguration();
 const configRegex: string = config.get('headwind.classRegex') || '';
@@ -59,23 +56,26 @@ export function activate(context: ExtensionContext) {
 			let workspaceFolder = workspace.workspaceFolders || [];
 			if (workspaceFolder[0]) {
 				window.showInformationMessage(
-					`Running on headwind on: ${workspaceFolder[0].uri.fsPath}`
+					`Running headwind on: ${workspaceFolder[0].uri.fsPath}`
 				);
-				exec(
-					`${rustyWindPath} ${workspaceFolder[0].uri.fsPath} --write`,
-					(error: string, stdout: string, stderr: string) => {
-						if (stdout && stdout === '') {
-							console.log('rustywind stdout: ', stdout);
-						}
-						if (stderr && stderr === '') {
-							console.log('rustywind stderr: ', stderr);
-							window.showErrorMessage(`Headwind error: ${stderr}`);
-						}
-						if (error && error === '') {
-							console.log('rustywind error: ', error);
-							window.showErrorMessage(`Headwind error: ${error}`);
-						}
-					}
+
+				let rustyWindArgs = [workspaceFolder[0].uri.fsPath, '--write'];
+				let rustyWindProc = spawn(rustyWindPath, rustyWindArgs);
+
+				rustyWindProc.stdout.on(
+					'data',
+					data =>
+						data &&
+						data.toString() !== '' &&
+						console.log('rustywind stdout:\n', data.toString())
+				);
+
+				rustyWindProc.stderr.on(
+					'data',
+					data =>
+						data &&
+						data.toString() !== '' &&
+						console.log('rustywind stderr:\n', data.toString())
 				);
 			}
 		}
