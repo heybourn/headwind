@@ -11,7 +11,7 @@ const configRegex: string = config.get('headwind.classRegex') || '';
 const sortOrder = config.get('headwind.defaultSortOrder');
 
 const shouldRemoveDuplicatesConfig = config.get(
-	'headwind.enableRemoveDuplicates'
+	'headwind.removeDuplicates'
 );
 const shouldRemoveDuplicates =
 	typeof shouldRemoveDuplicatesConfig === 'boolean'

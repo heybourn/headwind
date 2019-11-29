@@ -1267,7 +1267,7 @@
                         "description": "A flag that controls whether or not Headwind will sort your Tailwind CSS classes on save.",
                         "scope": "window"
                     },
-                    "headwind.enableRemoveDuplicates": {
+                    "headwind.removeDuplicates": {
                         "default": true,
                         "description": "A flag that controls whether or not Headwind will remove duplicate Tailwind CSS classes.",
                         "type": "boolean",
