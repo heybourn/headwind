@@ -23,7 +23,7 @@ const HTMLClassAtrributeRegex = new RegExp(configRegex, 'gi');
 export function activate(context: ExtensionContext) {
 	let disposable = commands.registerTextEditorCommand(
 		'headwind.sortTailwindClasses',
-		function(editor, edit) {
+		function (editor, edit) {
 			const editorText = editor.document.getText();
 
 			let classAttributes: RegExpExecArray | null;
@@ -60,7 +60,7 @@ export function activate(context: ExtensionContext) {
 			let workspaceFolder = workspace.workspaceFolders || [];
 			if (workspaceFolder[0]) {
 				window.showInformationMessage(
-					`Running headwind on: ${workspaceFolder[0].uri.fsPath}`
+					`Running Headwind on: ${workspaceFolder[0].uri.fsPath}`
 				);
 
 				let rustyWindArgs = [
