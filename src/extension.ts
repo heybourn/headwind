@@ -1,6 +1,12 @@
 'use strict';
 
-import { commands, workspace, ExtensionContext, Range } from 'vscode';
+import {
+	commands,
+	workspace,
+	ExtensionContext,
+	Range,
+	TextDocument
+} from 'vscode';
 
 import { sortClassString } from './utils';
 
@@ -48,5 +54,15 @@ export function activate(context: ExtensionContext) {
 			}
 		}
 	);
+
 	context.subscriptions.push(disposable);
+
+	// if runOnSave is enabled organize tailwind classes before saving
+	if (config.get('headwind.runOnSave')) {
+		context.subscriptions.push(
+			workspace.onWillSaveTextDocument(_e => {
+				commands.executeCommand('headwind.sortTailwindClasses');
+			})
+		);
+	}
 }

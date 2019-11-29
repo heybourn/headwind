@@ -26,6 +26,7 @@
         "Other"
     ],
     "activationEvents": [
+        "workspaceContains:**/tailwind.config.js",
         "onCommand:headwind.sortTailwindClasses"
     ],
     "main": "./out/extension",
@@ -1253,6 +1254,12 @@
                         "type": "string",
                         "default": "\\bclass(?:Name)*\\s*=\\s*([\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])",
                         "description": "Class regex: A string that determines the default regex to search a class attribute.",
+                        "scope": "window"
+                    },
+                    "headwind.runOnSave": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "An option which controls whether headwind will automatically run on save",
                         "scope": "window"
                     },
                     "headwind.enableRemoveDuplicates": {

@@ -41,6 +41,13 @@ By default headwind will remove duplicated class names. With this option you can
 
 `"headwind.enableRemoveDuplicates": false`
 
+### `headwind.runOnSave`:
+
+By default headwind will automatically on on save but this can be disabled. 
+
+`"headwind.runOnSave": false`
+
+
 # Contributing
 
 Headwind is open source and contributions are always welcome. If you're interested in submitting a pull request, please take a moment to review [CONTRIBUTING.md](.github/CONTRIBUTING.md).
