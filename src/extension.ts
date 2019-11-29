@@ -70,13 +70,12 @@ export function activate(context: ExtensionContext) {
 						console.log('rustywind stdout:\n', data.toString())
 				);
 
-				rustyWindProc.stderr.on(
-					'data',
-					data =>
-						data &&
-						data.toString() !== '' &&
-						console.log('rustywind stderr:\n', data.toString())
-				);
+				rustyWindProc.stderr.on('data', data => {
+					if (data && data.toString() !== '') {
+						console.log('rustywind stderr:\n', data.toString());
+						window.showErrorMessage(`Headwind error: ${data.toString()}`);
+					}
+				});
 			}
 		}
 	);
