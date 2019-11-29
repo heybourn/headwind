@@ -1300,6 +1300,6 @@
     },
     "dependencies": {
         "rimraf": "^3.0.0",
-        "rustywind": "^0.5.1"
+        "rustywind": "^0.6.0"
     }
 }

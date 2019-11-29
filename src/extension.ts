@@ -10,7 +10,13 @@ const configRegex: string = config.get('headwind.classRegex') || '';
 
 const sortOrder = config.get('headwind.defaultSortOrder');
 
-const shouldRemoveDuplicates = config.get('headwind.enableRemoveDuplicates');
+const shouldRemoveDuplicatesConfig = config.get(
+	'headwind.enableRemoveDuplicates'
+);
+const shouldRemoveDuplicates =
+	typeof shouldRemoveDuplicatesConfig === 'boolean'
+		? shouldRemoveDuplicatesConfig
+		: true;
 
 const HTMLClassAtrributeRegex = new RegExp(configRegex, 'gi');
 
@@ -59,7 +65,12 @@ export function activate(context: ExtensionContext) {
 					`Running headwind on: ${workspaceFolder[0].uri.fsPath}`
 				);
 
-				let rustyWindArgs = [workspaceFolder[0].uri.fsPath, '--write'];
+				let rustyWindArgs = [
+					workspaceFolder[0].uri.fsPath,
+					'--write',
+					shouldRemoveDuplicates ? '' : '--allow-duplicates'
+				].filter(arg => arg !== '');
+
 				let rustyWindProc = spawn(rustyWindPath, rustyWindArgs);
 
 				rustyWindProc.stdout.on(
