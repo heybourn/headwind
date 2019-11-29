@@ -1299,7 +1299,6 @@
         "typescript": "^3.5.1"
     },
     "dependencies": {
-        "rimraf": "^3.0.0",
         "rustywind": "^0.6.0"
     }
 }
