@@ -27,14 +27,19 @@
     ],
     "activationEvents": [
         "workspaceContains:**/tailwind.config.js",
-        "onCommand:headwind.sortTailwindClasses"
+        "onCommand:headwind.sortTailwindClasses",
+        "onCommand:headwind.sortTailwindClassesOnWorkspace"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [
             {
                 "command": "headwind.sortTailwindClasses",
-                "title": "Sort Tailwind CSS Classes"
+                "title": "Headwind: Sort Tailwind CSS Classes"
+            },
+            {
+                "command": "headwind.sortTailwindClassesOnWorkspace",
+                "title": "Headwind: Sort Tailwind CSS Classes on Entire Workspace"
             }
         ],
         "keybindings": [
@@ -1292,5 +1297,8 @@
         "ts-node": "^8.5.2",
         "tslint": "^5.16.0",
         "typescript": "^3.5.1"
+    },
+    "dependencies": {
+        "rustywind": "^0.6.0"
     }
 }
