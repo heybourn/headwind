@@ -1,14 +1,12 @@
 'use strict';
 
-import {
-	commands,
-	workspace,
-	ExtensionContext,
-	Range,
-	TextDocument
-} from 'vscode';
+import { commands, workspace, ExtensionContext, Range, window } from 'vscode';
 
 import { sortClassString } from './utils';
+
+const { exec } = require('child_process');
+
+const { rustyWindPath } = require('rustywind');
 
 const config = workspace.getConfiguration();
 const configRegex: string = config.get('headwind.classRegex') || '';
@@ -55,6 +53,35 @@ export function activate(context: ExtensionContext) {
 		}
 	);
 
+	let runOnProject = commands.registerCommand(
+		'headwind.sortTailwindClassesOnWorkspace',
+		() => {
+			let workspaceFolder = workspace.workspaceFolders || [];
+			if (workspaceFolder[0]) {
+				window.showInformationMessage(
+					`Running on headwind on: ${workspaceFolder[0].uri.fsPath}`
+				);
+				exec(
+					`${rustyWindPath} ${workspaceFolder[0].uri.fsPath} --write`,
+					(error: string, stdout: string, stderr: string) => {
+						if (stdout && stdout === '') {
+							console.log('rustywind stdout: ', stdout);
+						}
+						if (stderr && stderr === '') {
+							console.log('rustywind stderr: ', stderr);
+							window.showErrorMessage(`Headwind error: ${stderr}`);
+						}
+						if (error && error === '') {
+							console.log('rustywind error: ', error);
+							window.showErrorMessage(`Headwind error: ${error}`);
+						}
+					}
+				);
+			}
+		}
+	);
+
+	context.subscriptions.push(runOnProject);
 	context.subscriptions.push(disposable);
 
 	// if runOnSave is enabled organize tailwind classes before saving
