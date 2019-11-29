@@ -47,9 +47,7 @@ export function activate(context: ExtensionContext) {
 					sortClassString(
 						valueMatch,
 						Array.isArray(sortOrder) ? sortOrder : [],
-						typeof shouldRemoveDuplicates === 'boolean'
-							? shouldRemoveDuplicates
-							: true
+						shouldRemoveDuplicates
 					)
 				);
 			}
