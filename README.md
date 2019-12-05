@@ -1,8 +1,10 @@
-# Headwind  <img src="https://github.com/heybourn/headwind/blob/master/icon.png?raw=true" width="50">
+# Headwind 
 
 [![CircleCI](https://circleci.com/gh/heybourn/headwind.svg?style=svg)](https://circleci.com/gh/heybourn/headwind)
 
-> Headwind is an opinionated Tailwind CSS class sorter for Visual Studio Code. It enforces consistent ordering of classes by parsing your code and reprinting class tags to follow a given order.
+Headwind is an opinionated Tailwind CSS class sorter for Visual Studio Code. It enforces consistent ordering of classes by parsing your code and reprinting class tags to follow a given order. 
+
+> Headwind runs on save, will remove duplicate classes and can even sort entire workspaces.
 
 **[Get it from the VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=heybourn.headwind)**
 
@@ -10,43 +12,43 @@
 
 # Usage
 
-You can install Headwind via the VS Code Marketplace, or package it yourself using [vsce](https://code.visualstudio.com/api/working-with-extensions/publishing-extension). Headwind works globally once installed and can be triggered by:
+You can install Headwind via the VS Code Marketplace, or package it yourself using [vsce](https://code.visualstudio.com/api/working-with-extensions/publishing-extension). Headwind works globally once installed and will run on save if a `tailwind.config.js` file is present within your working directory.
+
+You can also trigger Headwind by:
 
 * Pressing CMD + Shift + T on Mac
 * Pressing CTRL + ALT + T on Windows
-* Running 'Sort Tailwind CSS Classes' via the Command Palette
 
-Performing one of these actions will automatically sort all classes within an opened document. Any custom/unknown classes will be moved to the end of the class list.
+Headwind can sort individual files by running 'Sort Tailwind CSS Classes' via the Command Palette. Workspaces can also be sorted by running 'Sort Tailwind CSS Classes on Entire Workspace'.
+
+Any breakpoints or unknown classes will be moved to the end of the class list, whilst duplicate classes will be removed.
 
 # Customisation
 
-Headwind ships with a default class order (located in [package.json](package.json)). You can edit this to your liking on the extension settings page.
-
-<img src="https://github.com/heybourn/headwind/blob/master/img/settings.png?raw=true" alt="Settings" width="750px">
-
-### `headwind.sortTailwindClasses`:
-
-A string array that determines the default sort order.
+Headwind ships with a default class order (located in [package.json](package.json)). You can edit this (and other settings) to your liking on the extension settings page.
 
 ### `headwind.classRegex`:
 
 A string that determines the default regex to search a class attribute.
-The default is set to `\bclass(?:Name)*\\s*=\\s*([\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])` but can be customized to fit your needs.
+The default value is set to `\bclass(?:Name)*\\s*=\\s*([\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])` but this can be customized to suit your needs.
 
-Make sure if a new group is created that this is non-capturing by using `(?:)`.
+If a new group is created, ensure that it is non-capturing by using `(?:)`.
+
+### `headwind.sortTailwindClasses`:
+
+An array that determines Headwind's default sort order.
 
 ### `headwind.removeDuplicates`:
 
-By default headwind will remove duplicated class names. With this option you can disable duplicate class removals.
+Headwind will remove duplicate class names by default. This can be toggled on or off.
 
 `"headwind.removeDuplicates": false`
 
 ### `headwind.runOnSave`:
 
-By default headwind will automatically on on save but this can be disabled.
+Headwind will run on save by default (if a `tailwind.config.js` file is present within your working directory). This can be toggled on or off.
 
 `"headwind.runOnSave": false`
-
 
 # Contributing
 
