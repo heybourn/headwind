@@ -6,7 +6,13 @@ Headwind is an opinionated Tailwind CSS class sorter for Visual Studio Code. It 
 
 > Headwind runs on save, will remove duplicate classes and can even sort entire workspaces.
 
-**[Get it from the VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=heybourn.headwind)**
+---
+
+**[Get it from the VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=heybourn.headwind)** 
+
+**[Use PHPStorm? Get @WalrusSoup's Headwind port →](https://plugins.jetbrains.com/plugin/13376-tailwind-formatter/)**
+
+---
 
 <img src="https://github.com/heybourn/headwind/blob/master/img/explainer.gif?raw=true" alt="Explainer" width="750px">
 
