@@ -6,7 +6,7 @@ import { spawn } from 'child_process';
 import { rustyWindPath } from 'rustywind';
 
 const config = workspace.getConfiguration();
-const configRegex: string = config.get('headwind.classRegex') || '';
+const configRegex: {[key: string]: string} = config.get('headwind.classRegex') || {};
 
 const sortOrder = config.get('headwind.defaultSortOrder');
 
@@ -18,23 +18,24 @@ const shouldRemoveDuplicates =
 		? shouldRemoveDuplicatesConfig
 		: true;
 
-const HTMLClassAtrributeRegex = new RegExp(configRegex, 'gi');
-
 export function activate(context: ExtensionContext) {
 	let disposable = commands.registerTextEditorCommand(
 		'headwind.sortTailwindClasses',
 		function (editor, edit) {
 			const editorText = editor.document.getText();
+			const editorLangId = editor.document.languageId;
 
-			let classAttributes: RegExpExecArray | null;
+			const classWrapperRegex = new RegExp(configRegex[editorLangId] || configRegex['html'], 'gi');
+			let classWrapper: RegExpExecArray | null;
 			while (
-				(classAttributes = HTMLClassAtrributeRegex.exec(editorText)) !== null
+				(classWrapper = classWrapperRegex.exec(editorText)) !== null
 			) {
-				const attributeMatch = classAttributes[0];
-				const valueMatch = classAttributes[2];
+				const wrapperMatch = classWrapper[0];
+				const valueMatchIndex = classWrapper.findIndex((match, idx) => idx !== 0 && match);
+				const valueMatch = classWrapper[valueMatchIndex];
 
 				const startPosition =
-					classAttributes.index + attributeMatch.lastIndexOf(valueMatch);
+					classWrapper.index + wrapperMatch.lastIndexOf(valueMatch);
 				const endPosition = startPosition + valueMatch.length;
 
 				const range = new Range(
