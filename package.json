@@ -14,7 +14,7 @@
         "color": "#f1f5f8"
     },
     "icon": "icon.png",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "publisher": "heybourn",
     "license": "MIT",
     "author": "Ryan Heybourn <ryan@heybourn.com>",
@@ -1256,9 +1256,16 @@
                         "scope": "window"
                     },
                     "headwind.classRegex": {
-                        "type": "string",
-                        "default": "\\bclass(?:Name)*\\s*=\\s*([\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])",
-                        "description": "Class regex: A string that determines the default regex to search a class attribute.",
+                        "type": "object",
+                        "default": {
+                            "html": "\\bclass\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\']",
+                            "css": "\\B@apply\\s+([_a-zA-Z0-9\\s\\-\\:\\/]+);",
+                            "javascript": "(?:\\bclassName\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])|(?:\\btw\\s*`([_a-zA-Z0-9\\s\\-\\:\\/]*)`)",
+                            "javascriptreact": "(?:\\bclassName\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])|(?:\\btw\\s*`([_a-zA-Z0-9\\s\\-\\:\\/]*)`)",
+                            "typescript": "(?:\\bclassName\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])|(?:\\btw\\s*`([_a-zA-Z0-9\\s\\-\\:\\/]*)`)",
+                            "typescriptreact": "(?:\\bclassName\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])|(?:\\btw\\s*`([_a-zA-Z0-9\\s\\-\\:\\/]*)`)"
+                        },
+                        "description": "An object with language IDs as keys and their values determining the regex to search for Tailwind CSS classes.",
                         "scope": "window"
                     },
                     "headwind.runOnSave": {
