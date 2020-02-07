@@ -158,6 +158,8 @@
                             "float-left",
                             "float-right",
                             "float-none",
+                            "clear-right",
+                            "clear-both",
                             "object-contain",
                             "object-cover",
                             "object-fill",
@@ -1593,9 +1595,7 @@
                             "stroke-0",
                             "stroke-1",
                             "stroke-2",
-                            "clear-left",
-                            "clear-right",
-                            "clear-both"
+                            "clear-left"
                         ],
                         "description": "Sort order: A string array that determines the default sort order.",
                         "scope": "window"
