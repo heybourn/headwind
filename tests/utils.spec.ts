@@ -7,10 +7,10 @@ const pjson = require('../package.json');
 const sortOrder: string[] =
 	pjson.contributes.configuration[0].properties['headwind.defaultSortOrder']
 		.default;
-const customClasses: string[] = ['yoda', 'skywalker'];
+const customClass: string = 'yoda';
 
 const randomizedClassString = _.shuffle(sortOrder).join(' ');
-const randomizedClassStringWithCustom = _.shuffle([...sortOrder, ...customClasses]).join(' ');
+const randomizedClassStringWithCustom = _.shuffle([...sortOrder, customClass]).join(' ');
 
 describe('sortClassString', () => {
 	it('should return a sorted class list string', () => {
@@ -26,7 +26,7 @@ describe('sortClassString', () => {
 			shouldRemoveDuplicates: true,
 			shouldPrependCustomClasses: false,
 		});
-		expect(result).toBe([...sortOrder, ...customClasses].join(' '));
+		expect(result).toBe([...sortOrder, customClass].join(' '));
 	});
 
 	it('should return a sorted class list string with prepended custom classes', () => {
@@ -34,7 +34,7 @@ describe('sortClassString', () => {
 			shouldRemoveDuplicates: true,
 			shouldPrependCustomClasses: true,
 		});
-		expect(result).toBe([...customClasses, ...sortOrder].join(' '));
+		expect(result).toBe([customClass, ...sortOrder].join(' '));
 	});
 });
 
