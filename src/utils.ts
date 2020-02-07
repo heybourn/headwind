@@ -1,3 +1,8 @@
+export interface Options {
+	shouldRemoveDuplicates: boolean;
+	shouldPrependCustomClasses: boolean;
+}
+
 /**
  * Sorts a string of CSS classes according to a predefined order.
  * @param classString The string to sort
@@ -8,27 +13,29 @@
 export const sortClassString = (
 	classString: string,
 	sortOrder: string[],
-	shouldRemoveDuplicates: boolean
+	options: Options
 ): string => {
 	let classArray = classString.split(/\s+/g);
 
-	if (shouldRemoveDuplicates) {
+	if (options.shouldRemoveDuplicates) {
 		classArray = removeDuplicates(classArray);
 	}
 
-	classArray = sortClassArray(classArray, sortOrder);
+	classArray = sortClassArray(classArray, sortOrder, options.shouldPrependCustomClasses);
 
 	return classArray.join(' ');
 };
 
 const sortClassArray = (
 	classArray: string[],
-	sortOrder: string[]
+	sortOrder: string[],
+	shouldPrependCustomClasses: boolean
 ): string[] => [
+	...classArray.filter(el => shouldPrependCustomClasses && sortOrder.indexOf(el) === -1), // append the classes that were not in the sort order if configured this way
 	...classArray
 		.filter(el => sortOrder.indexOf(el) !== -1) // take the classes that are in the sort order
 		.sort((a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b)), // and sort them
-	...classArray.filter(el => sortOrder.indexOf(el) === -1) // prepend the classes that were not in the sort order
+	...classArray.filter(el => !shouldPrependCustomClasses && sortOrder.indexOf(el) === -1) // prepend the classes that were not in the sort order if configured this way
 ];
 
 const removeDuplicates = (classArray: string[]): string[] => [

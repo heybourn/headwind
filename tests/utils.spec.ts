@@ -7,13 +7,34 @@ const pjson = require('../package.json');
 const sortOrder: string[] =
 	pjson.contributes.configuration[0].properties['headwind.defaultSortOrder']
 		.default;
+const customClasses: string[] = ['yoda', 'skywalker'];
 
 const randomizedClassString = _.shuffle(sortOrder).join(' ');
+const randomizedClassStringWithCustom = _.shuffle([...sortOrder, ...customClasses]).join(' ');
 
 describe('sortClassString', () => {
 	it('should return a sorted class list string', () => {
-		const result = sortClassString(randomizedClassString, sortOrder, true);
+		const result = sortClassString(randomizedClassString, sortOrder, {
+			shouldRemoveDuplicates: true,
+			shouldPrependCustomClasses: false,
+		});
 		expect(result).toBe(sortOrder.join(' '));
+	});
+
+	it('should return a sorted class list string with appended custom classes', () => {
+		const result = sortClassString(randomizedClassStringWithCustom, sortOrder, {
+			shouldRemoveDuplicates: true,
+			shouldPrependCustomClasses: false,
+		});
+		expect(result).toBe([...sortOrder, ...customClasses].join(' '));
+	});
+
+	it('should return a sorted class list string with prepended custom classes', () => {
+		const result = sortClassString(randomizedClassStringWithCustom, sortOrder, {
+			shouldRemoveDuplicates: true,
+			shouldPrependCustomClasses: true,
+		});
+		expect(result).toBe([...customClasses, ...sortOrder].join(' '));
 	});
 });
 
@@ -25,7 +46,10 @@ describe('removeDuplicates', () => {
 		const result = sortClassString(
 			randomizedAndDuplicatedClassString,
 			sortOrder,
-			true
+			{
+				shouldRemoveDuplicates: true,
+				shouldPrependCustomClasses: false,
+			}
 		);
 		expect(result).toBe(sortOrder.join(' '));
 	});
@@ -37,7 +61,10 @@ describe('removeDuplicates', () => {
 		const result = sortClassString(
 			randomizedAndDuplicatedClassString,
 			sortOrder,
-			false
+			{
+				shouldRemoveDuplicates: false,
+				shouldPrependCustomClasses: false,
+			}
 		);
 		expect(result).toBe(
 			['container', ...sortOrder, 'random', 'random'].join(' ')

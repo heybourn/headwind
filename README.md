@@ -59,6 +59,12 @@ Headwind will remove duplicate class names by default. This can be toggled on or
 
 `"headwind.removeDuplicates": false`
 
+### `headwind.prependCustomClasses`:
+
+Headwind will append custom class names by default. They can be prepended instead.
+
+`"headwind.prependCustomClasses": true`
+
 ### `headwind.runOnSave`:
 
 Headwind will run on save by default (if a `tailwind.config.js` file is present within your working directory). This can be toggled on or off.
