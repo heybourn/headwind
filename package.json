@@ -14,7 +14,7 @@
         "color": "#f1f5f8"
     },
     "icon": "icon.png",
-    "version": "1.6.2",
+    "version": "1.6.3",
     "publisher": "heybourn",
     "license": "MIT",
     "author": "Ryan Heybourn <ryan@heybourn.com>",
@@ -266,12 +266,10 @@
                             "min-h-0",
                             "min-h-full",
                             "min-h-screen",
-
                             "grid-flow-row",
                             "grid-flow-col",
                             "grid-flow-row-dense",
                             "grid-flow-col-dense",
-
                             "grid-cols-1",
                             "grid-cols-2",
                             "grid-cols-3",
@@ -285,7 +283,6 @@
                             "grid-cols-11",
                             "grid-cols-12",
                             "grid-cols-none",
-
                             "col-auto",
                             "col-span-1",
                             "col-span-2",
@@ -327,7 +324,6 @@
                             "col-end-12",
                             "col-end-13",
                             "col-end-auto",
-
                             "grid-rows-1",
                             "grid-rows-2",
                             "grid-rows-3",
@@ -335,7 +331,6 @@
                             "grid-rows-5",
                             "grid-rows-6",
                             "grid-rows-none",
-
                             "row-auto",
                             "row-span-1",
                             "row-span-2",
@@ -359,7 +354,6 @@
                             "row-end-6",
                             "row-end-7",
                             "row-end-auto",
-
                             "gap-0",
                             "gap-1",
                             "gap-2",
@@ -417,8 +411,6 @@
                             "col-gap-56",
                             "col-gap-64",
                             "col-gap-px",
-
-
                             "p-0",
                             "p-1",
                             "p-2",
