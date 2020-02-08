@@ -1624,6 +1624,12 @@
                         "description": "A flag that controls whether or not Headwind will remove duplicate Tailwind CSS classes.",
                         "type": "boolean",
                         "scope": "window"
+                    },
+                    "headwind.prependCustomClasses": {
+                        "default": false,
+                        "description": "A flag that controls whether or not Headwind will move custom CSS classes before (true) or after (false) the Tailwind CSS classes.",
+                        "type": "boolean",
+                        "scope": "window"
                     }
                 }
             }

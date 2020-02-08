@@ -18,6 +18,14 @@ const shouldRemoveDuplicates =
 		? shouldRemoveDuplicatesConfig
 		: true;
 
+const shouldPrependCustomClassesConfig = config.get(
+	'headwind.prependCustomClasses'
+);
+const shouldPrependCustomClasses =
+	typeof shouldPrependCustomClassesConfig === 'boolean'
+		? shouldPrependCustomClassesConfig
+		: false;
+
 export function activate(context: ExtensionContext) {
 	let disposable = commands.registerTextEditorCommand(
 		'headwind.sortTailwindClasses',
@@ -43,12 +51,17 @@ export function activate(context: ExtensionContext) {
 					editor.document.positionAt(endPosition)
 				);
 
+				const options = {
+					shouldRemoveDuplicates,
+					shouldPrependCustomClasses
+				};
+
 				edit.replace(
 					range,
 					sortClassString(
 						valueMatch,
 						Array.isArray(sortOrder) ? sortOrder : [],
-						shouldRemoveDuplicates
+						options
 					)
 				);
 			}
