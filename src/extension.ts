@@ -4,11 +4,15 @@ import { commands, workspace, ExtensionContext, Range, window } from 'vscode';
 import { sortClassString } from './utils';
 import { spawn } from 'child_process';
 import { rustyWindPath } from 'rustywind';
+import DefaultSorter from './default_sorter';
 
 const config = workspace.getConfiguration();
 const configRegex: {[key: string]: string} = config.get('headwind.classRegex') || {};
 
-const sortOrder = config.get('headwind.defaultSortOrder');
+const sortOrder =
+	config.get('headwind.defaultSortOrder') == 'USE_DEFAULT'
+		? DefaultSorter
+		: config.get('headwind.defaultSortOrder');
 
 const shouldRemoveDuplicatesConfig = config.get(
 	'headwind.removeDuplicates'
