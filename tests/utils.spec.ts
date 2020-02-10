@@ -1,22 +1,23 @@
 import { sortClassString } from '../src/utils';
 import 'jest';
-import * as _ from 'lodash';
+import { shuffle, random } from 'lodash';
+import DefaultSorter from '../src/default_sorter';
 
-const pjson = require('../package.json');
-
-const sortOrder: string[] =
-	pjson.contributes.configuration[0].properties['headwind.defaultSortOrder']
-		.default;
+const start = random(0, DefaultSorter.length - 100);
+const sortOrder: string[] = DefaultSorter.slice(start, start + 200);
 const customClass: string = 'yoda';
 
-const randomizedClassString = _.shuffle(sortOrder).join(' ');
-const randomizedClassStringWithCustom = _.shuffle([...sortOrder, customClass]).join(' ');
+const randomizedClassString = shuffle(sortOrder).join(' ');
+const randomizedClassStringWithCustom = shuffle([
+	...sortOrder,
+	customClass
+]).join(' ');
 
 describe('sortClassString', () => {
 	it('should return a sorted class list string', () => {
 		const result = sortClassString(randomizedClassString, sortOrder, {
 			shouldRemoveDuplicates: true,
-			shouldPrependCustomClasses: false,
+			shouldPrependCustomClasses: false
 		});
 		expect(result).toBe(sortOrder.join(' '));
 	});
@@ -24,7 +25,7 @@ describe('sortClassString', () => {
 	it('should return a sorted class list string with appended custom classes', () => {
 		const result = sortClassString(randomizedClassStringWithCustom, sortOrder, {
 			shouldRemoveDuplicates: true,
-			shouldPrependCustomClasses: false,
+			shouldPrependCustomClasses: false
 		});
 		expect(result).toBe([...sortOrder, customClass].join(' '));
 	});
@@ -32,7 +33,7 @@ describe('sortClassString', () => {
 	it('should return a sorted class list string with prepended custom classes', () => {
 		const result = sortClassString(randomizedClassStringWithCustom, sortOrder, {
 			shouldRemoveDuplicates: true,
-			shouldPrependCustomClasses: true,
+			shouldPrependCustomClasses: true
 		});
 		expect(result).toBe([customClass, ...sortOrder].join(' '));
 	});
@@ -41,14 +42,14 @@ describe('sortClassString', () => {
 describe('removeDuplicates', () => {
 	it('should remove duplicate classes', () => {
 		const randomizedAndDuplicatedClassString =
-			randomizedClassString + ' ' + _.shuffle(sortOrder).join(' ');
+			randomizedClassString + ' ' + shuffle(sortOrder).join(' ');
 
 		const result = sortClassString(
 			randomizedAndDuplicatedClassString,
 			sortOrder,
 			{
 				shouldRemoveDuplicates: true,
-				shouldPrependCustomClasses: false,
+				shouldPrependCustomClasses: false
 			}
 		);
 		expect(result).toBe(sortOrder.join(' '));
@@ -56,18 +57,16 @@ describe('removeDuplicates', () => {
 
 	it('should remove not delete duplicate classes when flag is set', () => {
 		const randomizedAndDuplicatedClassString =
-			'container random random' + ' ' + _.shuffle(sortOrder).join(' ');
+			'random random' + ' ' + shuffle(sortOrder).join(' ');
 
 		const result = sortClassString(
 			randomizedAndDuplicatedClassString,
 			sortOrder,
 			{
 				shouldRemoveDuplicates: false,
-				shouldPrependCustomClasses: false,
+				shouldPrependCustomClasses: false
 			}
 		);
-		expect(result).toBe(
-			['container', ...sortOrder, 'random', 'random'].join(' ')
-		);
+		expect(result).toBe([...sortOrder, 'random', 'random'].join(' '));
 	});
 });
