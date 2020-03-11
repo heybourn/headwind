@@ -71,4 +71,4 @@ Headwind will run on save by default (if a `tailwind.config.js` file is present 
 
 ## Contributing
 
-Headwind is open source and contributions are always welcome. If you're interested in submitting a pull request, please take a moment to review [CONTRIBUTING.md](.github/CONTRIBUTING.md).
+Headwind is open-source and contributions are always welcome. If you're interested in submitting a pull request, please take a moment to review [CONTRIBUTING.md](.github/CONTRIBUTING.md).
