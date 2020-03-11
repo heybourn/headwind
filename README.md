@@ -12,8 +12,6 @@ Headwind is an opinionated Tailwind CSS class sorter for Visual Studio Code. It 
 
 **[Use PHPStorm? Get @WalrusSoup's Headwind port →](https://plugins.jetbrains.com/plugin/13376-tailwind-formatter/)**
 
----
-
 <img src="https://github.com/heybourn/headwind/blob/master/img/explainer.gif?raw=true" alt="Explainer" width="750px">
 
 ## Usage
