@@ -1,6 +1,6 @@
 # Contributing
 
-Headwind is open source and contributions are always welcome. If you're interested in submitting a pull request, please take a moment to review this document.
+Headwind is open-source and contributions are always welcome. If you're interested in submitting a pull request, please take a moment to review this document.
 
 ## Pull requests
 
