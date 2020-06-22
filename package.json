@@ -1839,7 +1839,13 @@
                         "description": "A flag that controls whether or not Headwind will move custom CSS classes before (true) or after (false) the Tailwind CSS classes.",
                         "type": "boolean",
                         "scope": "window"
-                    }
+                    },
+					"headwind.customTailwindPrefix": {
+						"default": "",
+						"description": "If the Tailwind Prefix function is used, this can be specified here (e.g. tw-).",
+						"type": "string",
+						"scope": "window"
+					}
                 }
             }
         ]

@@ -17,6 +17,7 @@ describe('sortClassString', () => {
 		const result = sortClassString(randomizedClassString, sortOrder, {
 			shouldRemoveDuplicates: true,
 			shouldPrependCustomClasses: false,
+			customTailwindPrefix: ''
 		});
 		expect(result).toBe(sortOrder.join(' '));
 	});
@@ -25,6 +26,7 @@ describe('sortClassString', () => {
 		const result = sortClassString(randomizedClassStringWithCustom, sortOrder, {
 			shouldRemoveDuplicates: true,
 			shouldPrependCustomClasses: false,
+			customTailwindPrefix: ''
 		});
 		expect(result).toBe([...sortOrder, customClass].join(' '));
 	});
@@ -33,6 +35,7 @@ describe('sortClassString', () => {
 		const result = sortClassString(randomizedClassStringWithCustom, sortOrder, {
 			shouldRemoveDuplicates: true,
 			shouldPrependCustomClasses: true,
+			customTailwindPrefix: ''
 		});
 		expect(result).toBe([customClass, ...sortOrder].join(' '));
 	});
@@ -49,6 +52,7 @@ describe('removeDuplicates', () => {
 			{
 				shouldRemoveDuplicates: true,
 				shouldPrependCustomClasses: false,
+				customTailwindPrefix: ''
 			}
 		);
 		expect(result).toBe(sortOrder.join(' '));
@@ -64,6 +68,7 @@ describe('removeDuplicates', () => {
 			{
 				shouldRemoveDuplicates: false,
 				shouldPrependCustomClasses: false,
+				customTailwindPrefix: ''
 			}
 		);
 		expect(result).toBe(

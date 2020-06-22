@@ -10,6 +10,12 @@ const configRegex: {[key: string]: string} = config.get('headwind.classRegex') |
 
 const sortOrder = config.get('headwind.defaultSortOrder');
 
+const customTailwindPrefixConfig  = config.get('headwind.customTailwindPrefix');
+const customTailwindPrefix =
+	typeof customTailwindPrefixConfig === 'string'
+		? customTailwindPrefixConfig
+		: '';
+
 const shouldRemoveDuplicatesConfig = config.get(
 	'headwind.removeDuplicates'
 );
@@ -53,7 +59,8 @@ export function activate(context: ExtensionContext) {
 
 				const options = {
 					shouldRemoveDuplicates,
-					shouldPrependCustomClasses
+					shouldPrependCustomClasses,
+					customTailwindPrefix
 				};
 
 				edit.replace(
