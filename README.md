@@ -47,6 +47,44 @@ Example from `package.json`:
 }
 ```
 
+#### Debugging Custom Regex:
+
+To debug custom `classRegex`, you can use the code below:
+```js
+// Your test string here
+const editorText = `
+  export const Layout = ({ children }) => (
+    <div class="h-screen">
+      <div className="w-64 h-full bg-blue-400 relative"></div>
+      <div>{children}</div>
+    </div>
+  )
+`
+// Your Regex here
+const regex = /(?:\b(?:class|className)?\s*=\s*{?[\"\']([_a-zA-Z0-9\s\-\:/]+)[\"\']}?)/
+const classWrapperRegex = new RegExp(regex, 'gi')
+
+let classWrapper
+while ((classWrapper = classWrapperRegex.exec(editorText)) !== null) {
+  const wrapperMatch = classWrapper[0]
+  const valueMatchIndex = classWrapper.findIndex((match, idx) => idx !== 0 && match)
+  const valueMatch = classWrapper[valueMatchIndex]
+
+  console.log('classWrapper', classWrapper)
+  console.log('wrapperMatch', wrapperMatch)
+  console.log('valueMatchIndex', valueMatchIndex)
+  console.log('valueMatch', valueMatch)
+}
+```
+
+The result of `valueMatch` should be the class text _exactly_, with no other characters.
+
+Good example value: `valueMatch w-64 h-full bg-blue-400 relative`
+
+**Note**: Changes made to Headwind's JSON configuration options may not take effect immediately. When experimenting with custom `classRegex`, after each change you should open the control pallete (Ctrl/Cmd + Shift + P) and run `Developer: Reload Window` to ensure changes are applied.
+
+<hr>
+
 ### `headwind.sortTailwindClasses`:
 
 An array that determines Headwind's default sort order.
