@@ -14,7 +14,7 @@
         "color": "#f1f5f8"
     },
     "icon": "icon.png",
-    "version": "1.6.5",
+    "version": "1.6.6",
     "publisher": "heybourn",
     "license": "MIT",
     "author": "Ryan Heybourn <ryan@heybourn.com>",
@@ -1840,12 +1840,12 @@
                         "type": "boolean",
                         "scope": "window"
                     },
-					"headwind.customTailwindPrefix": {
-						"default": "",
-						"description": "If the Tailwind Prefix function is used, this can be specified here (e.g. tw-).",
-						"type": "string",
-						"scope": "window"
-					}
+                    "headwind.customTailwindPrefix": {
+                        "default": "",
+                        "description": "If the Tailwind Prefix function is used, this can be specified here (e.g. tw-).",
+                        "type": "string",
+                        "scope": "window"
+                    }
                 }
             }
         ]
