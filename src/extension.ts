@@ -75,8 +75,8 @@ export function activate(context: ExtensionContext) {
 		}
 	);
 
-	let sortSelection = commands.registerTextEditorCommand(
-		'headwind.sortSelectedTailwindClasses',
+	let runOnSelection = commands.registerTextEditorCommand(
+		'headwind.sortTailwindClassesInSelection',
 		function (editor, edit) {
 			const selection = editor.selection;
 			const selectedText = editor.document.getText(selection);
@@ -142,7 +142,7 @@ export function activate(context: ExtensionContext) {
 
 	context.subscriptions.push(runOnProject);
 	context.subscriptions.push(disposable);
-	context.subscriptions.push(sortSelection);
+	context.subscriptions.push(runOnSelection);
 
 	// if runOnSave is enabled organize tailwind classes before saving
 	if (config.get('headwind.runOnSave')) {

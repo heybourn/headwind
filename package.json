@@ -28,7 +28,7 @@
     "activationEvents": [
         "workspaceContains:**/tailwind.config.js",
         "onCommand:headwind.sortTailwindClasses",
-        "onCommand:headwind.sortSelectedTailwindClasses",
+        "onCommand:headwind.sortTailwindClassesInSelection",
         "onCommand:headwind.sortTailwindClassesOnWorkspace"
     ],
     "main": "./out/extension",
@@ -39,8 +39,8 @@
                 "title": "Headwind: Sort Tailwind CSS Classes"
             },
             {
-                "command": "headwind.sortSelectedTailwindClasses",
-                "title": "Headwind: Sort Selected Tailwind CSS Classes"
+                "command": "headwind.sortTailwindClassesInSelection",
+                "title": "Headwind: Sort Tailwind CSS Classes in Selection"
             },
             {
                 "command": "headwind.sortTailwindClassesOnWorkspace",
