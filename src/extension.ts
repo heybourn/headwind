@@ -80,8 +80,8 @@ export function activate(context: ExtensionContext) {
 		function (editor, edit) {
 			const selection = editor.selection;
 			const selectedText = editor.document.getText(selection);
-			const selectionRegexStr: string = config.get('headwind.selectionRegex') || ''
-			const selectionRegex = new RegExp(selectionRegexStr)
+			const selectionRegexStr: string = config.get('headwind.selectionRegex') || '';
+			const selectionRegex = new RegExp(selectionRegexStr);
 			
 			const options = {
 				shouldRemoveDuplicates,
@@ -100,7 +100,7 @@ export function activate(context: ExtensionContext) {
 					)
 				);
 			} else {
-				window.showErrorMessage('Headwind Selection Error: Some of your selection doesn\'t look like css classes. Please select only css classes and try again.')
+				window.showErrorMessage('Headwind Selection Error: Some of your selection doesn\'t look like css classes. Please select only css classes and try again.');
 			}
 		}
 	);
