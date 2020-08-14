@@ -28,6 +28,7 @@
     "activationEvents": [
         "workspaceContains:**/tailwind.config.js",
         "onCommand:headwind.sortTailwindClasses",
+        "onCommand:headwind.sortSelectedTailwindClasses",
         "onCommand:headwind.sortTailwindClassesOnWorkspace"
     ],
     "main": "./out/extension",
@@ -36,6 +37,10 @@
             {
                 "command": "headwind.sortTailwindClasses",
                 "title": "Headwind: Sort Tailwind CSS Classes"
+            },
+            {
+                "command": "headwind.sortSelectedTailwindClasses",
+                "title": "Headwind: Sort Selected Tailwind CSS Classes"
             },
             {
                 "command": "headwind.sortTailwindClassesOnWorkspace",
@@ -1825,6 +1830,12 @@
                             "typescriptreact": "(?:\\bclassName\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])|(?:\\btw\\s*`([_a-zA-Z0-9\\s\\-\\:\\/]*)`)"
                         },
                         "description": "An object with language IDs as keys and their values determining the regex to search for Tailwind CSS classes.",
+                        "scope": "window"
+                    },
+                    "headwind.selectionRegex": {
+                        "type": "string",
+                        "default": "^[_a-zA-Z0-9\\s\\-\\:\\/]+$",
+                        "description": "A string determining the regex to search for Tailwind CSS classes when using the sort selection command.",
                         "scope": "window"
                     },
                     "headwind.runOnSave": {

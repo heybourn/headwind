@@ -75,6 +75,36 @@ export function activate(context: ExtensionContext) {
 		}
 	);
 
+	let sortSelection = commands.registerTextEditorCommand(
+		'headwind.sortSelectedTailwindClasses',
+		function (editor, edit) {
+			const selection = editor.selection;
+			const selectedText = editor.document.getText(selection);
+			const selectionRegexStr: string = config.get('headwind.selectionRegex') || ''
+			const selectionRegex = new RegExp(selectionRegexStr)
+			
+			const options = {
+				shouldRemoveDuplicates,
+				shouldPrependCustomClasses,
+				customTailwindPrefix
+			};
+
+
+			if (selectedText.match(selectionRegex)) {
+				edit.replace(
+					selection,
+					sortClassString(
+						selectedText,
+						Array.isArray(sortOrder) ? sortOrder : [],
+						options
+					)
+				);
+			} else {
+				window.showErrorMessage('Headwind Selection Error: Some of your selection doesn\'t look like css classes. Please select only css classes and try again.')
+			}
+		}
+	);
+
 	let runOnProject = commands.registerCommand(
 		'headwind.sortTailwindClassesOnWorkspace',
 		() => {
@@ -112,6 +142,7 @@ export function activate(context: ExtensionContext) {
 
 	context.subscriptions.push(runOnProject);
 	context.subscriptions.push(disposable);
+	context.subscriptions.push(sortSelection);
 
 	// if runOnSave is enabled organize tailwind classes before saving
 	if (config.get('headwind.runOnSave')) {
