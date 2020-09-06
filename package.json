@@ -1649,6 +1649,6 @@
         "typescript": "^3.5.1"
     },
     "dependencies": {
-        "rustywind": "^0.6.3"
+        "rustywind": "^0.6.7"
     }
 }
