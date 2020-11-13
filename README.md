@@ -22,6 +22,8 @@ You can also trigger Headwind by:
 
 * Pressing CMD + Shift + T on Mac
 * Pressing CTRL + ALT + T on Windows
+* Pressing CTRL + ALT + T on Linux
+
 
 Headwind can sort individual files by running 'Sort Tailwind CSS Classes' via the Command Palette. Workspaces can also be sorted by running 'Sort Tailwind CSS Classes on Entire Workspace'.
 
