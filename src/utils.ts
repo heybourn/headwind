@@ -1,6 +1,7 @@
 export interface Options {
 	shouldRemoveDuplicates: boolean;
 	shouldPrependCustomClasses: boolean;
+	customTailwindPrefix: string;
 }
 
 /**
@@ -21,7 +22,15 @@ export const sortClassString = (
 		classArray = removeDuplicates(classArray);
 	}
 
-	classArray = sortClassArray(classArray, sortOrder, options.shouldPrependCustomClasses);
+	// prepend custom tailwind prefix to all tailwind sortOrder-classes
+	const sortOrderClone  = [...sortOrder];
+	if(options.customTailwindPrefix.length > 0) {
+		for (var i=0; i < sortOrderClone.length; i++) {
+			sortOrderClone[i] = options.customTailwindPrefix + sortOrderClone[i];
+		}
+	}
+
+	classArray = sortClassArray(classArray, sortOrderClone, options.shouldPrependCustomClasses);
 
 	return classArray.join(' ');
 };

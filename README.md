@@ -12,8 +12,6 @@ Headwind is an opinionated Tailwind CSS class sorter for Visual Studio Code. It 
 
 **[Use PHPStorm? Get @WalrusSoup's Headwind port →](https://plugins.jetbrains.com/plugin/13376-tailwind-formatter/)**
 
----
-
 <img src="https://github.com/heybourn/headwind/blob/master/img/explainer.gif?raw=true" alt="Explainer" width="750px">
 
 ## Usage
@@ -24,6 +22,8 @@ You can also trigger Headwind by:
 
 * Pressing CMD + Shift + T on Mac
 * Pressing CTRL + ALT + T on Windows
+* Pressing CTRL + ALT + T on Linux
+
 
 Headwind can sort individual files by running 'Sort Tailwind CSS Classes' via the Command Palette. Workspaces can also be sorted by running 'Sort Tailwind CSS Classes on Entire Workspace'.
 
@@ -49,6 +49,44 @@ Example from `package.json`:
 }
 ```
 
+#### Debugging Custom Regex:
+
+To debug custom `classRegex`, you can use the code below:
+```js
+// Your test string here
+const editorText = `
+  export const Layout = ({ children }) => (
+    <div class="h-screen">
+      <div className="w-64 h-full bg-blue-400 relative"></div>
+      <div>{children}</div>
+    </div>
+  )
+`
+// Your Regex here
+const regex = /(?:\b(?:class|className)?\s*=\s*{?[\"\']([_a-zA-Z0-9\s\-\:/]+)[\"\']}?)/
+const classWrapperRegex = new RegExp(regex, 'gi')
+
+let classWrapper
+while ((classWrapper = classWrapperRegex.exec(editorText)) !== null) {
+  const wrapperMatch = classWrapper[0]
+  const valueMatchIndex = classWrapper.findIndex((match, idx) => idx !== 0 && match)
+  const valueMatch = classWrapper[valueMatchIndex]
+
+  console.log('classWrapper', classWrapper)
+  console.log('wrapperMatch', wrapperMatch)
+  console.log('valueMatchIndex', valueMatchIndex)
+  console.log('valueMatch', valueMatch)
+}
+```
+
+The result of `valueMatch` should be the class text _exactly_, with no other characters.
+
+Good example value: `valueMatch w-64 h-full bg-blue-400 relative`
+
+**Note**: Changes made to Headwind's JSON configuration options may not take effect immediately. When experimenting with custom `classRegex`, after each change you should open the control pallete (Ctrl/Cmd + Shift + P) and run `Developer: Reload Window` to ensure changes are applied.
+
+<hr>
+
 ### `headwind.sortTailwindClasses`:
 
 An array that determines Headwind's default sort order.
@@ -73,4 +111,34 @@ Headwind will run on save by default (if a `tailwind.config.js` file is present 
 
 ## Contributing
 
-Headwind is open source and contributions are always welcome. If you're interested in submitting a pull request, please take a moment to review [CONTRIBUTING.md](.github/CONTRIBUTING.md).
+Headwind is open-source and contributions are always welcome. If you're interested in submitting a pull request, please take a moment to review [CONTRIBUTING.md](.github/CONTRIBUTING.md).
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/heybourn/headwind/graphs/contributors"><img src="https://opencollective.com/headwind/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/headwind/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/headwind"><img src="https://opencollective.com/headwind/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/headwind/contribute)]
+
+<a href="https://opencollective.com/headwind/organization/0/website"><img src="https://opencollective.com/headwind/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/headwind/organization/1/website"><img src="https://opencollective.com/headwind/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/headwind/organization/2/website"><img src="https://opencollective.com/headwind/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/headwind/organization/3/website"><img src="https://opencollective.com/headwind/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/headwind/organization/4/website"><img src="https://opencollective.com/headwind/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/headwind/organization/5/website"><img src="https://opencollective.com/headwind/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/headwind/organization/6/website"><img src="https://opencollective.com/headwind/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/headwind/organization/7/website"><img src="https://opencollective.com/headwind/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/headwind/organization/8/website"><img src="https://opencollective.com/headwind/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/headwind/organization/9/website"><img src="https://opencollective.com/headwind/organization/9/avatar.svg"></a>
