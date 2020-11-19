@@ -1753,7 +1753,7 @@
                             "-ml-72",
                             "-ml-80",
                             "-ml-96",
-                            "-ml-px,
+                            "-ml-px",
                             "space-y-0",
                             "space-y-1",
                             "space-y-2",
@@ -3609,7 +3609,7 @@
                             "stroke-2",
                             "sr-only",
                             "not-sr-only"
-                        ]
+                        ],
                         "description": "Sort order: A string array that determines the default sort order.",
                         "scope": "window"
                     },
