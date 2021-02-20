@@ -50,3 +50,25 @@ const sortClassArray = (
 const removeDuplicates = (classArray: string[]): string[] => [
 	...new Set(classArray)
 ];
+
+export function getClassMatch(
+	regex: string,
+	editorText: string,
+	callback: (
+		classWrapper: RegExpExecArray,
+		wrapperMatch: string,
+		valueMatch: string
+	) => void
+) {
+	const classWrapperRegex = new RegExp(regex, 'gi');
+	let classWrapper: RegExpExecArray | null;
+	while ((classWrapper = classWrapperRegex.exec(editorText)) !== null) {
+		const wrapperMatch = classWrapper[0];
+		const valueMatchIndex = classWrapper.findIndex(
+			(match, idx) => idx !== 0 && match
+		);
+		const valueMatch = classWrapper[valueMatchIndex];
+
+		callback(classWrapper, wrapperMatch, valueMatch);
+	}
+}
