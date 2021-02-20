@@ -209,7 +209,7 @@ describe('extract className (jsx) string', () => {
 			multiLineClassString,
 		],
 		[
-			'complex foo func single quotes multi lines',
+			'complex foo func double quotes multi lines',
 			generateEditorText(`
 								  { clsx(
 									  foo,
