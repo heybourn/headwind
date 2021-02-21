@@ -221,6 +221,11 @@ describe('extract className (jsx) string', () => {
 								  }`),
 			classString,
 		],
+		[
+			'class attribute',
+			`class="${classString}"`,
+			classString
+		]
 	])('%s', (testName, editorText, expectedValueMatch) => {
 		for (const jsxLanguage of jsxLanguages) {
 			getClassMatch(
