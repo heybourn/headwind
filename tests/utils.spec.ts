@@ -225,6 +225,13 @@ describe('extract className (jsx) string', () => {
 			'class attribute',
 			`class="${classString}"`,
 			classString
+		],
+		[
+			'string literal',
+			`export function FormGroup({className = '', ...props}) {
+			  return <div className={\`${classString} \$\{className\}\`} {...props} />
+			}`,
+			`${classString} \$\{className\}`
 		]
 	])('%s', (testName, editorText, expectedValueMatch) => {
 		for (const jsxLanguage of jsxLanguages) {
