@@ -23,14 +23,18 @@ export const sortClassString = (
 	}
 
 	// prepend custom tailwind prefix to all tailwind sortOrder-classes
-	const sortOrderClone  = [...sortOrder];
-	if(options.customTailwindPrefix.length > 0) {
-		for (var i=0; i < sortOrderClone.length; i++) {
+	const sortOrderClone = [...sortOrder];
+	if (options.customTailwindPrefix.length > 0) {
+		for (var i = 0; i < sortOrderClone.length; i++) {
 			sortOrderClone[i] = options.customTailwindPrefix + sortOrderClone[i];
 		}
 	}
 
-	classArray = sortClassArray(classArray, sortOrderClone, options.shouldPrependCustomClasses);
+	classArray = sortClassArray(
+		classArray,
+		sortOrderClone,
+		options.shouldPrependCustomClasses
+	);
 
 	return classArray.join(' ');
 };
@@ -40,15 +44,19 @@ const sortClassArray = (
 	sortOrder: string[],
 	shouldPrependCustomClasses: boolean
 ): string[] => [
-	...classArray.filter(el => shouldPrependCustomClasses && sortOrder.indexOf(el) === -1), // append the classes that were not in the sort order if configured this way
+	...classArray.filter(
+		(el) => shouldPrependCustomClasses && sortOrder.indexOf(el) === -1
+	), // append the classes that were not in the sort order if configured this way
 	...classArray
-		.filter(el => sortOrder.indexOf(el) !== -1) // take the classes that are in the sort order
+		.filter((el) => sortOrder.indexOf(el) !== -1) // take the classes that are in the sort order
 		.sort((a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b)), // and sort them
-	...classArray.filter(el => !shouldPrependCustomClasses && sortOrder.indexOf(el) === -1) // prepend the classes that were not in the sort order if configured this way
+	...classArray.filter(
+		(el) => !shouldPrependCustomClasses && sortOrder.indexOf(el) === -1
+	), // prepend the classes that were not in the sort order if configured this way
 ];
 
 const removeDuplicates = (classArray: string[]): string[] => [
-	...new Set(classArray)
+	...new Set(classArray),
 ];
 
 export function getClassMatch(

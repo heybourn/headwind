@@ -6,19 +6,18 @@ import { spawn } from 'child_process';
 import { rustyWindPath } from 'rustywind';
 
 const config = workspace.getConfiguration();
-const configRegex: {[key: string]: string} = config.get('headwind.classRegex') || {};
+const configRegex: { [key: string]: string } =
+	config.get('headwind.classRegex') || {};
 
 const sortOrder = config.get('headwind.defaultSortOrder');
 
-const customTailwindPrefixConfig  = config.get('headwind.customTailwindPrefix');
+const customTailwindPrefixConfig = config.get('headwind.customTailwindPrefix');
 const customTailwindPrefix =
 	typeof customTailwindPrefixConfig === 'string'
 		? customTailwindPrefixConfig
 		: '';
 
-const shouldRemoveDuplicatesConfig = config.get(
-	'headwind.removeDuplicates'
-);
+const shouldRemoveDuplicatesConfig = config.get('headwind.removeDuplicates');
 const shouldRemoveDuplicates =
 	typeof shouldRemoveDuplicatesConfig === 'boolean'
 		? shouldRemoveDuplicatesConfig
@@ -83,20 +82,20 @@ export function activate(context: ExtensionContext) {
 				let rustyWindArgs = [
 					workspaceFolder[0].uri.fsPath,
 					'--write',
-					shouldRemoveDuplicates ? '' : '--allow-duplicates'
-				].filter(arg => arg !== '');
+					shouldRemoveDuplicates ? '' : '--allow-duplicates',
+				].filter((arg) => arg !== '');
 
 				let rustyWindProc = spawn(rustyWindPath, rustyWindArgs);
 
 				rustyWindProc.stdout.on(
 					'data',
-					data =>
+					(data) =>
 						data &&
 						data.toString() !== '' &&
 						console.log('rustywind stdout:\n', data.toString())
 				);
 
-				rustyWindProc.stderr.on('data', data => {
+				rustyWindProc.stderr.on('data', (data) => {
 					if (data && data.toString() !== '') {
 						console.log('rustywind stderr:\n', data.toString());
 						window.showErrorMessage(`Headwind error: ${data.toString()}`);
@@ -112,7 +111,7 @@ export function activate(context: ExtensionContext) {
 	// if runOnSave is enabled organize tailwind classes before saving
 	if (config.get('headwind.runOnSave')) {
 		context.subscriptions.push(
-			workspace.onWillSaveTextDocument(_e => {
+			workspace.onWillSaveTextDocument((_e) => {
 				commands.executeCommand('headwind.sortTailwindClasses');
 			})
 		);
