@@ -9,4 +9,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Overhauled class detecting regex for javascript/javascriptreact/typescript/typescriptreact, thanks @petertriho #109
+* Overhauled class detecting regex for javascript/javascriptreact/typescript/typescriptreact, thanks [@petertriho](https://github.com/petertriho) in [#109](https://github.com/heybourn/headwind/pull/109) 
