@@ -1,7 +1,7 @@
 'use strict';
 
 import { commands, workspace, ExtensionContext, Range, window } from 'vscode';
-import { sortClassString } from './utils';
+import { sortClassString, getClassMatch } from './utils';
 import { spawn } from 'child_process';
 import { rustyWindPath } from 'rustywind';
 
@@ -39,39 +39,35 @@ export function activate(context: ExtensionContext) {
 			const editorText = editor.document.getText();
 			const editorLangId = editor.document.languageId;
 
-			const classWrapperRegex = new RegExp(configRegex[editorLangId] || configRegex['html'], 'gi');
-			let classWrapper: RegExpExecArray | null;
-			while (
-				(classWrapper = classWrapperRegex.exec(editorText)) !== null
-			) {
-				const wrapperMatch = classWrapper[0];
-				const valueMatchIndex = classWrapper.findIndex((match, idx) => idx !== 0 && match);
-				const valueMatch = classWrapper[valueMatchIndex];
+			getClassMatch(
+				configRegex[editorLangId] || configRegex['html'],
+				editorText,
+				(classWrapper, wrapperMatch, valueMatch) => {
+					const startPosition =
+						classWrapper.index + wrapperMatch.lastIndexOf(valueMatch);
+					const endPosition = startPosition + valueMatch.length;
 
-				const startPosition =
-					classWrapper.index + wrapperMatch.lastIndexOf(valueMatch);
-				const endPosition = startPosition + valueMatch.length;
+					const range = new Range(
+						editor.document.positionAt(startPosition),
+						editor.document.positionAt(endPosition)
+					);
 
-				const range = new Range(
-					editor.document.positionAt(startPosition),
-					editor.document.positionAt(endPosition)
-				);
+					const options = {
+						shouldRemoveDuplicates,
+						shouldPrependCustomClasses,
+						customTailwindPrefix,
+					};
 
-				const options = {
-					shouldRemoveDuplicates,
-					shouldPrependCustomClasses,
-					customTailwindPrefix
-				};
-
-				edit.replace(
-					range,
-					sortClassString(
-						valueMatch,
-						Array.isArray(sortOrder) ? sortOrder : [],
-						options
-					)
-				);
-			}
+					edit.replace(
+						range,
+						sortClassString(
+							valueMatch,
+							Array.isArray(sortOrder) ? sortOrder : [],
+							options
+						)
+					);
+				}
+			);
 		}
 	);
 
