@@ -10,14 +10,17 @@ const sortOrder: string[] =
 const customClass: string = 'yoda';
 
 const randomizedClassString = _.shuffle(sortOrder).join(' ');
-const randomizedClassStringWithCustom = _.shuffle([...sortOrder, customClass]).join(' ');
+const randomizedClassStringWithCustom = _.shuffle([
+	...sortOrder,
+	customClass,
+]).join(' ');
 
 describe('sortClassString', () => {
 	it('should return a sorted class list string', () => {
 		const result = sortClassString(randomizedClassString, sortOrder, {
 			shouldRemoveDuplicates: true,
 			shouldPrependCustomClasses: false,
-			customTailwindPrefix: ''
+			customTailwindPrefix: '',
 		});
 		expect(result).toBe(sortOrder.join(' '));
 	});
@@ -26,7 +29,7 @@ describe('sortClassString', () => {
 		const result = sortClassString(randomizedClassStringWithCustom, sortOrder, {
 			shouldRemoveDuplicates: true,
 			shouldPrependCustomClasses: false,
-			customTailwindPrefix: ''
+			customTailwindPrefix: '',
 		});
 		expect(result).toBe([...sortOrder, customClass].join(' '));
 	});
@@ -35,7 +38,7 @@ describe('sortClassString', () => {
 		const result = sortClassString(randomizedClassStringWithCustom, sortOrder, {
 			shouldRemoveDuplicates: true,
 			shouldPrependCustomClasses: true,
-			customTailwindPrefix: ''
+			customTailwindPrefix: '',
 		});
 		expect(result).toBe([customClass, ...sortOrder].join(' '));
 	});
@@ -52,7 +55,7 @@ describe('removeDuplicates', () => {
 			{
 				shouldRemoveDuplicates: true,
 				shouldPrependCustomClasses: false,
-				customTailwindPrefix: ''
+				customTailwindPrefix: '',
 			}
 		);
 		expect(result).toBe(sortOrder.join(' '));
@@ -68,7 +71,7 @@ describe('removeDuplicates', () => {
 			{
 				shouldRemoveDuplicates: false,
 				shouldPrependCustomClasses: false,
-				customTailwindPrefix: ''
+				customTailwindPrefix: '',
 			}
 		);
 		expect(result).toBe(
@@ -221,18 +224,14 @@ describe('extract className (jsx) string', () => {
 								  }`),
 			classString,
 		],
-		[
-			'class attribute',
-			`class="${classString}"`,
-			classString
-		],
+		['class attribute', `class="${classString}"`, classString],
 		[
 			'string literal',
 			`export function FormGroup({className = '', ...props}) {
 			  return <div className={\`${classString} \$\{className\}\`} {...props} />
 			}`,
-			`${classString} \$\{className\}`
-		]
+			`${classString} \$\{className\}`,
+		],
 	])('%s', (testName, editorText, expectedValueMatch) => {
 		for (const jsxLanguage of jsxLanguages) {
 			getClassMatch(
