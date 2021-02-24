@@ -83,15 +83,18 @@ describe('removeDuplicates', () => {
 describe('extract className (jsx) string with single regex', () => {
 	const classString = 'w-64 h-full bg-blue-400 relative';
 
-	const generateEditorText = (classNameString: string) => `
-		export const Layout = ({ children }) => (
+	const beforeText = `export const Layout = ({ children }) => (
 			<div>
-				<div className=${classNameString}></div>
+				<div className=`;
+	const afterText = `></div>
 				<div>{children}</div>
 			</div>
 		)`;
 
-	const startPosition = 74;
+	const generateEditorText = (classNameString: string) =>
+		`${beforeText}${classNameString}${afterText}`;
+
+	const startPosition = beforeText.length;
 
 	const multiLineClassString = `
 		w-64
@@ -105,126 +108,128 @@ describe('extract className (jsx) string with single regex', () => {
 			'simple single quotes',
 			generateEditorText(`'${classString}'`),
 			classString,
-			startPosition
+			startPosition + 1,
 		],
 		[
 			'simple double quotes',
 			generateEditorText(`"${classString}"`),
 			classString,
-			startPosition
+			startPosition + 1,
 		],
 		[
 			'curly braces around single quotes',
 			generateEditorText(`{ '${classString}' }`),
 			classString,
-			startPosition + 2
+			startPosition + "{ '".length,
 		],
 		[
 			'curly braces around double quotes',
 			generateEditorText(`{ "${classString}" }`),
 			classString,
-			startPosition + 2
+			startPosition + '{ "'.length,
 		],
 		[
 			'simple clsx single quotes',
-			generateEditorText(`{ clsx('${classString}' }`),
+			generateEditorText(`{ clsx('${classString}') }`),
 			classString,
-			startPosition + 7
+			startPosition + "{ clsx('".length,
 		],
 		[
 			'simple clsx double quotes',
-			generateEditorText(`{ clsx("${classString}" }`),
+			generateEditorText(`{ clsx("${classString}") }`),
 			classString,
-			startPosition + 7
+			startPosition + '{ clsx("'.length,
 		],
 		[
 			'simple classname single quotes',
-			generateEditorText(`{ classname('${classString}' }`),
+			generateEditorText(`{ classname('${classString}') }`),
 			classString,
-			startPosition + 12
+			startPosition + "{ classname('".length,
 		],
 		[
 			'simple classname double quotes',
-			generateEditorText(`{ classname("${classString}" }`),
+			generateEditorText(`{ classname("${classString}") }`),
 			classString,
-			startPosition + 12
+			startPosition + '{ classname("'.length,
 		],
 		[
 			'simple foo func single quotes',
-			generateEditorText(`{ foo('${classString}' }`),
+			generateEditorText(`{ foo('${classString}') }`),
 			classString,
-			startPosition + 6
+			startPosition + "{ foo('".length,
 		],
 		[
 			'simple foo func double quotes',
-			generateEditorText(`{ foo("${classString}" }`),
+			generateEditorText(`{ foo("${classString}") }`),
 			classString,
-			startPosition + 6
+			startPosition + '{ foo("'.length,
 		],
 		[
 			'foo func multi str single quotes (only extracts first string)',
-			generateEditorText(`{ foo('${classString}', 'class1 class2' }`),
+			generateEditorText(`{ foo('${classString}', 'class1 class2') }`),
 			classString,
-			startPosition + 6
+			startPosition + "{ foo('".length,
 		],
 		[
 			'foo func multi str double quotes (only extracts first string)',
-			generateEditorText(`{ foo("${classString}", "class1, class2" }`),
+			generateEditorText(`{ foo("${classString}", "class1, class2") }`),
 			classString,
-			startPosition + 6
+			startPosition + '{ foo("'.length,
 		],
 		[
 			'foo func multi var single quotes',
-			generateEditorText(`{ clsx(foo, bar, '${classString}', foo, bar }`),
+			generateEditorText(`{ clsx(foo, bar, '${classString}', foo, bar) }`),
 			classString,
-			startPosition + 17
+			startPosition + "{ clsx(foo, bar, '".length,
 		],
 		[
 			'foo func multi var double quotes',
-			generateEditorText(`{ clsx(foo, bar, "${classString}", foo, bar }`),
+			generateEditorText(`{ clsx(foo, bar, "${classString}", foo, bar) }`),
 			classString,
-			startPosition + 17
+			startPosition + '{ clsx(foo, bar, "'.length,
 		],
 		[
 			'foo func multi var multi str single quotes',
 			generateEditorText(
-				`{ clsx(foo, bar, '${classString}', foo, 'class1 class2', bar }`
+				`{ clsx(foo, bar, '${classString}', foo, 'class1 class2', bar) }`
 			),
 			classString,
-			startPosition + 17
+			startPosition + "{ clsx(foo, bar, '".length,
 		],
 		[
 			'foo func multi var multi str double quotes',
 			generateEditorText(
-				`{ clsx(foo, bar, "${classString}", foo, "class1 class2", bar }`
+				`{ clsx(foo, bar, "${classString}", foo, "class1 class2", bar) }`
 			),
 			classString,
-			startPosition + 17
+			startPosition + '{ clsx(foo, bar, "'.length,
 		],
 		[
 			'complex foo func single quotes multi lines',
-			generateEditorText(`
-								{ clsx(
+			generateEditorText(`{ clsx(
 								    foo,
 								    bar,
 								    '${classString}',
 								    foo,
 								    'class1 class2',
-								    bar
+								    bar)
 								}`),
 			classString,
-			startPosition + 63
+			startPosition +
+				`{ clsx(
+								    foo,
+								    bar,
+								    '`.length,
 		],
 		[
 			'simple multi line double quotes',
 			generateEditorText(`\"${multiLineClassString}\"`),
 			multiLineClassString,
-			startPosition
+			startPosition + 1,
 		],
 		[
 			'complex foo func double quotes multi lines',
-			generateEditorText(`
-								  { clsx(
+			generateEditorText(`{ clsx(
 									  foo,
 									  bar,
 									  "${classString}",
@@ -233,7 +238,11 @@ describe('extract className (jsx) string with single regex', () => {
 									  bar
 								  }`),
 			classString,
-			startPosition + 62
+			startPosition +
+				`{ clsx(
+									  foo,
+									  bar,
+									  "`.length,
 		],
 		['class attribute', `class="${classString}"`, classString, 7],
 		[
@@ -242,24 +251,27 @@ describe('extract className (jsx) string with single regex', () => {
 			  return <div className={\`${classString} \$\{className\}\`} {...props} />
 			}`,
 			`${classString} \$\{className\}`,
-			85
+			`export function FormGroup({className = '', ...props}) {
+			  return <div className={\``.length,
 		],
 	])('%s', (testName, editorText, expectedTextMatch, expectedStartPosition) => {
-		const stringRegex = "(?:\\bclass(?:Name)?\\s*=[\\w\\d\\s_,{}()[\\]]*[\"'`]([\\w\\d\\s_\\-:/${}]+)[\"'`][\\w\\d\\s_,{}()[\\]]*)|(?:\\btw\\s*`([\\w\\d\\s_\\-:/]*)`)";
-			const callback = jest.fn();
+		const stringRegex =
+			'(?:\\bclass(?:Name)?\\s*=[\\w\\d\\s_,{}()[\\]]*["\'`]([\\w\\d\\s_\\-:/${}]+)["\'`][\\w\\d\\s_,{}()[\\]]*)|(?:\\btw\\s*`([\\w\\d\\s_\\-:/]*)`)';
+		const callback = jest.fn();
 
-			getTextMatch(
-				buildRegexes(stringRegex),
-				editorText.toString(),
-				callback
-			);
+		getTextMatch(buildRegexes(stringRegex), editorText.toString(), callback);
 
-			expect(callback).toHaveBeenCalledWith(expectedTextMatch, expectedStartPosition);
+		expect(callback).toHaveBeenCalledWith(
+			expectedTextMatch,
+			expectedStartPosition
+		);
 	});
 });
 
 describe('extract className (jsx) string(s) with multiple regexes', () => {
-	const configRegex: { [key: string]: string } = pjson.contributes.configuration[0].properties['headwind.classRegex'].default;
+	const configRegex: { [key: string]: string } =
+		pjson.contributes.configuration[0].properties['headwind.classRegex']
+			.default;
 	const jsxLanguages = [
 		'javascript',
 		'javascriptreact',
@@ -269,15 +281,20 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 
 	const classString = 'w-64 h-full bg-blue-400 relative';
 
-	const generateEditorText = (classNameString: string) => `
+	const beforeText = `
 		export const Layout = ({ children }) => (
 			<div>
-				<div className=${classNameString}></div>
+				<div className=`;
+
+	const afterText = `></div>
 				<div>{children}</div>
 			</div>
 		)`;
 
-	const startPosition = 74;
+	const generateEditorText = (classNameString: string) =>
+		`${beforeText}${classNameString}${afterText}`;
+
+	const startPosition = beforeText.length;
 
 	const multiLineClassString = `
 		w-64
@@ -291,83 +308,73 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 			'simple single quotes',
 			generateEditorText(`'${classString}'`),
 			classString,
-			startPosition
+			startPosition + 1,
 		],
 		[
 			'simple double quotes',
 			generateEditorText(`"${classString}"`),
 			classString,
-			startPosition
+			startPosition + 1,
 		],
 		[
 			'curly braces around single quotes',
 			generateEditorText(`{ '${classString}' }`),
 			classString,
-			startPosition + 2
+			startPosition + "{ '".length,
 		],
 		[
 			'curly braces around double quotes',
 			generateEditorText(`{ "${classString}" }`),
 			classString,
-			startPosition + 2
+			startPosition + '{ "'.length,
 		],
 		[
 			'simple clsx single quotes',
-			generateEditorText(`{ clsx('${classString}' }`),
+			generateEditorText(`{ clsx('${classString}') }`),
 			classString,
-			startPosition + 7
+			startPosition + "{ clsx('".length,
 		],
 		[
 			'simple clsx double quotes',
-			generateEditorText(`{ clsx("${classString}" }`),
+			generateEditorText(`{ clsx("${classString}") }`),
 			classString,
-			startPosition + 7
+			startPosition + '{ clsx("'.length,
 		],
 		[
 			'simple classname single quotes',
-			generateEditorText(`{ classname('${classString}' }`),
+			generateEditorText(`{ classname('${classString}') }`),
 			classString,
-			startPosition + 12
+			startPosition + "{ className('".length,
 		],
 		[
 			'simple classname double quotes',
-			generateEditorText(`{ classname("${classString}" }`),
+			generateEditorText(`{ classname("${classString}") }`),
 			classString,
-			startPosition + 12
+			startPosition + '{ className("'.length,
 		],
 		[
 			'simple foo func single quotes',
-			generateEditorText(`{ foo('${classString}' }`),
+			generateEditorText(`{ foo('${classString}') }`),
 			classString,
-			startPosition + 6
+			startPosition + "{ foo('".length,
 		],
 		[
 			'simple foo func double quotes',
-			generateEditorText(`{ foo("${classString}" }`),
+			generateEditorText(`{ foo("${classString}") }`),
 			classString,
-			startPosition + 6
+			startPosition + '{ foo("'.length,
 		],
-		// [
-		// 	'foo func multi str single quotes (only extracts first string)',
-		// 	generateEditorText(`{ foo('${classString}', 'class1 class2' }`),
-		// 	classString,
-		// ],
-		// [
-		// 	'foo func multi str double quotes (only extracts first string)',
-		// 	generateEditorText(`{ foo("${classString}", "class1, class2" }`),
-		// 	classString,
-		// ],
 		[
 			'foo func multi var single quotes',
-			generateEditorText(`{ clsx(foo, bar, '${classString}', foo, bar }`),
+			generateEditorText(`{ clsx(foo, bar, '${classString}', foo, bar) }`),
 			classString,
-			startPosition + 17
+			startPosition + "{ clsx(foo, bar, '".length,
 		],
 		[
 			'foo func multi var double quotes',
-			generateEditorText(`{ clsx(foo, bar, "${classString}", foo, bar }`),
+			generateEditorText(`{ clsx(foo, bar, "${classString}", foo, bar) }`),
 			classString,
-			startPosition + 17,
+			startPosition + '{ clsx(foo, bar, "'.length,
 		],
 		// [
 		// 	'foo func multi var multi str single quotes',
@@ -400,7 +407,7 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 			'simple multi line double quotes',
 			generateEditorText(`\"${multiLineClassString}\"`),
 			multiLineClassString,
-			startPosition
+			startPosition + 1,
 		],
 		// [
 		// 	'complex foo func double quotes multi lines',
@@ -421,7 +428,9 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 			`export function FormGroup({className = '', ...props}) {
 			  return <div className={\`${classString} \$\{className\}\`} {...props} />
 			}`,
-			`${classString} \$\{className\}`, 85
+			`${classString} \$\{className\}`,
+			`export function FormGroup({className = '', ...props}) {
+			  return <div className={\``.length,
 		],
 	])('%s', (testName, editorText, expectedTextMatch, expectedStartPosition) => {
 		for (const jsxLanguage of jsxLanguages) {
@@ -433,13 +442,80 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 				callback
 			);
 
-			expect(callback).toHaveBeenCalledWith(expectedTextMatch, expectedStartPosition)
+			expect(callback).toHaveBeenCalledWith(
+				expectedTextMatch,
+				expectedStartPosition
+			);
 		}
 	});
 
 	it('should do nothing if no regexes (empty array) are provided', () => {
 		const callback = jest.fn();
-		getTextMatch([], "test", callback);
-		expect(callback).toHaveBeenCalledTimes(0)
-	})
+		getTextMatch([], 'test', callback);
+		expect(callback).toHaveBeenCalledTimes(0);
+	});
+
+	it.each([
+		[
+			'simple multi string',
+			`className={clsx("hello", "world")}`,
+			[
+				{ match: 'hello', startPosition: 'className={clsx("'.length },
+				{ match: 'world', startPosition: 'className={clsx("hello", "'.length },
+			],
+		],
+		[
+			'foo func multi str single quotes',
+			generateEditorText(`{ foo('${classString}', 'class1 class2') }`),
+			[
+				{ match: classString, startPosition: startPosition + "{ foo('".length },
+				{
+					match: 'class1 class2',
+					startPosition:
+						startPosition +
+						"{ foo('".length +
+						classString.length +
+						"', '".length,
+				},
+			],
+		],
+		[
+			'foo func multi str double quotes',
+			generateEditorText(`{ foo("${classString}", "class1 class2") }`),
+			[
+				{ match: classString, startPosition: startPosition + '{ foo("'.length },
+				{
+					match: 'class1 class2',
+					startPosition:
+						startPosition +
+						'{ foo("'.length +
+						classString.length +
+						'", "'.length,
+				},
+			],
+		],
+	])('%s', (testName, editorText, expectedResults) => {
+		for (const jsxLanguage of jsxLanguages) {
+			const callback = jest.fn();
+
+			getTextMatch(
+				buildRegexes(configRegex[jsxLanguage]),
+				editorText.toString(),
+				callback
+			);
+
+			expect(callback).toHaveBeenCalledTimes(expectedResults.length);
+			expect(typeof expectedResults !== 'string').toBeTruthy();
+
+			if (typeof expectedResults !== 'string') {
+				expectedResults.forEach((expectedResult, idx) => {
+					expect(callback).toHaveBeenNthCalledWith(
+						idx + 1,
+						expectedResult.match,
+						expectedResult.startPosition
+					);
+				});
+			}
+		}
+	});
 });
