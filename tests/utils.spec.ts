@@ -436,4 +436,10 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 			expect(callback).toHaveBeenCalledWith(expectedTextMatch, expectedStartPosition)
 		}
 	});
+
+	it('should do nothing if no regexes (empty array) are provided', () => {
+		const callback = jest.fn();
+		getTextMatch([], "test", callback);
+		expect(callback).toHaveBeenCalledTimes(0)
+	})
 });

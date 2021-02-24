@@ -60,43 +60,42 @@ const removeDuplicates = (classArray: string[]): string[] => [
 ];
 
 function isArrayOfStrings(value: string | string[]): value is string[] {
-    return (
-        Array.isArray(value) && value.every((item) => typeof item === 'string')
-    );
+	return (
+		Array.isArray(value) && value.every((item) => typeof item === 'string')
+	);
 }
 
 export function buildRegexes(value: string | string[]): RegExp[] {
-    if (isArrayOfStrings(value)) {
-        return value.map((v) => new RegExp(v, 'gi'));
-    } else {
-        return [new RegExp(value, 'gi')];
-    }
+	if (isArrayOfStrings(value)) {
+		return value.map((v) => new RegExp(v, 'gi'));
+	} else {
+		return [new RegExp(value, 'gi')];
+	}
 }
 
 export function getTextMatch(
-    regexes: RegExp[],
-    text: string,
-    callback: (text: string, startPosition: number) => void,
-    startPosition: number = 0
+	regexes: RegExp[],
+	text: string,
+	callback: (text: string, startPosition: number) => void,
+	startPosition: number = 0
 ): void {
-    let wrapper: RegExpExecArray | null;
-    while ((wrapper = regexes[0].exec(text)) !== null) {
-        const wrapperMatch = wrapper[0];
-        const valueMatchIndex = wrapper.findIndex(
-            (match, idx) => idx !== 0 && match
-        );
-        const valueMatch = wrapper[valueMatchIndex];
+	if (regexes.length >= 1) {
+		let wrapper: RegExpExecArray | null;
+		while ((wrapper = regexes[0].exec(text)) !== null) {
+			const wrapperMatch = wrapper[0];
+			const valueMatchIndex = wrapper.findIndex(
+				(match, idx) => idx !== 0 && match
+			);
+			const valueMatch = wrapper[valueMatchIndex];
 
-        const newStartPosition =
-            startPosition +
-            wrapper.index +
-            wrapperMatch.lastIndexOf(valueMatch);
+			const newStartPosition =
+				startPosition + wrapper.index + wrapperMatch.lastIndexOf(valueMatch);
 
-        if (regexes.length === 1) {
-            callback(valueMatch, newStartPosition);
-        } else {
-            getTextMatch(regexes.slice(1), valueMatch, callback, newStartPosition);
-        }
-    }
+			if (regexes.length === 1) {
+				callback(valueMatch, newStartPosition);
+			} else {
+				getTextMatch(regexes.slice(1), valueMatch, callback, newStartPosition);
+			}
+		}
+	}
 }
-
