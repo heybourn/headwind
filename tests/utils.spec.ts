@@ -579,3 +579,77 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 		}
 	});
 });
+
+describe('twin macro - extract tw prop (jsx) string(s) with multiple regexes', () => {
+	const configRegex: { [key: string]: string } =
+		pjson.contributes.configuration[0].properties['headwind.classRegex']
+			.default;
+	const jsxLanguages = [
+		'javascript',
+		'javascriptreact',
+		'typescript',
+		'typescriptreact',
+	];
+
+	it.each([
+		[
+			'simple twin macro example',
+			`import 'twin.macro'
+
+			const Input = () => <input tw="border hover:border-black" />
+			`,
+			[
+				{
+					match: 'border hover:border-black',
+					startPosition: `import 'twin.macro'
+
+			const Input = () => <input tw="`.length,
+				},
+			],
+		],
+		[
+			'simple twin macro example',
+			`import 'twin.macro'
+
+			const Input = () => <input tw={!error ? "border hover:border-black" : "border border-red-500"} />
+			`,
+			[
+				{
+					match: 'border hover:border-black',
+					startPosition: `import 'twin.macro'
+
+			const Input = () => <input tw={!error ? "`.length,
+				},
+				{
+					match: 'border border-red-500',
+					startPosition: `import 'twin.macro'
+
+			const Input = () => <input tw={!error ? "border hover:border-black" : "`.length,
+				},
+			],
+		],
+	])('%s', (testName, editorText, expectedResults) => {
+		for (const jsxLanguage of jsxLanguages) {
+			const callback = jest.fn();
+
+			getTextMatch(
+				buildRegexes(configRegex[jsxLanguage]),
+				editorText.toString(),
+				callback
+			);
+
+			expect(callback).toHaveBeenCalledTimes(expectedResults.length);
+			expect(typeof expectedResults !== 'string').toBeTruthy();
+
+			if (typeof expectedResults !== 'string') {
+				expectedResults.forEach((expectedResult, idx) => {
+					expect(callback).toHaveBeenNthCalledWith(
+						idx + 1,
+						expectedResult.match,
+						expectedResult.startPosition
+					);
+				});
+			}
+		}
+	});
+});
