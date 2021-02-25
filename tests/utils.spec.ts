@@ -376,52 +376,12 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 			classString,
 			startPosition + '{ clsx(foo, bar, "'.length,
 		],
-		// [
-		// 	'foo func multi var multi str single quotes',
-		// 	generateEditorText(
-		// 		`{ clsx(foo, bar, '${classString}', foo, 'class1 class2', bar }`
-		// 	),
-		// 	classString,
-		// ],
-		// [
-		// 	'foo func multi var multi str double quotes',
-		// 	generateEditorText(
-		// 		`{ clsx(foo, bar, "${classString}", foo, "class1 class2", bar }`
-		// 	),
-		// 	classString,
-		// ],
-		// [
-		// 	'complex foo func single quotes multi lines',
-		// 	generateEditorText(`
-		// 						{ clsx(
-		// 						    foo,
-		// 						    bar,
-		// 						    '${classString}',
-		// 						    foo,
-		// 						    'class1 class2',
-		// 						    bar
-		// 						}`),
-		// 	classString,
-		// ],
 		[
 			'simple multi line double quotes',
 			generateEditorText(`\"${multiLineClassString}\"`),
 			multiLineClassString,
 			startPosition + 1,
 		],
-		// [
-		// 	'complex foo func double quotes multi lines',
-		// 	generateEditorText(`
-		// 						  { clsx(
-		// 							  foo,
-		// 							  bar,
-		// 							  "${classString}",
-		// 							  foo,
-		// 							  "class1 class2",
-		// 							  bar
-		// 						  }`),
-		// 	classString,
-		// ],
 		['class attribute', `class="${classString}"`, classString, 7],
 		[
 			'string literal',
@@ -491,6 +451,106 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 						'{ foo("'.length +
 						classString.length +
 						'", "'.length,
+				},
+			],
+		],
+		[
+			'foo func multi var multi str single quotes',
+			generateEditorText(
+				`{ clsx(foo, bar, '${classString}', foo, 'class1 class2', bar) }`
+			),
+			[
+				{
+					match: classString,
+					startPosition: startPosition + "{ clsx(foo, bar, '".length,
+				},
+				{
+					match: 'class1 class2',
+					startPosition:
+						startPosition + `{ clsx(foo, bar, '${classString}', foo, '`.length,
+				},
+			],
+		],
+		[
+			'foo func multi var multi str double quotes',
+			generateEditorText(
+				`{ clsx(foo, bar, "${classString}", foo, "class1 class2", bar) }`
+			),
+			[
+				{
+					match: classString,
+					startPosition: startPosition + '{ clsx(foo, bar, "'.length,
+				},
+				{
+					match: 'class1 class2',
+					startPosition:
+						startPosition + `{ clsx(foo, bar, "${classString}", foo, "`.length,
+				},
+			],
+		],
+		[
+			'complex foo func single quotes multi lines',
+			generateEditorText(`{ clsx(
+								    foo,
+								    bar,
+								    '${classString}',
+								    foo,
+								    'class1 class2',
+								    bar)
+								}`),
+			[
+				{
+					match: classString,
+					startPosition:
+						startPosition +
+						`{ clsx(
+								    foo,
+								    bar,
+								    '`.length,
+				},
+				{
+					match: 'class1 class2',
+					startPosition:
+						startPosition +
+						`{ clsx(
+								    foo,
+								    bar,
+								    '${classString}',
+								    foo,
+								    '`.length,
+				},
+			],
+		],
+		[
+			'complex foo func double quotes multi lines',
+			generateEditorText(`{ clsx(
+									  foo,
+									  bar,
+									  "${classString}",
+									  foo,
+									  "class1 class2",
+									  bar
+								  }`),
+			[
+				{
+					match: classString,
+					startPosition:
+						startPosition +
+						`{ clsx(
+									  foo,
+									  bar,
+									  "`.length,
+				},
+				{
+					match: 'class1 class2',
+					startPosition:
+						startPosition +
+						`{ clsx(
+									  foo,
+									  bar,
+									  "${classString}",
+									  foo,
+									  "`.length,
 				},
 			],
 		],
