@@ -59,24 +59,43 @@ const removeDuplicates = (classArray: string[]): string[] => [
 	...new Set(classArray),
 ];
 
-export function getClassMatch(
-	regex: string,
-	editorText: string,
-	callback: (
-		classWrapper: RegExpExecArray,
-		wrapperMatch: string,
-		valueMatch: string
-	) => void
-) {
-	const classWrapperRegex = new RegExp(regex, 'gi');
-	let classWrapper: RegExpExecArray | null;
-	while ((classWrapper = classWrapperRegex.exec(editorText)) !== null) {
-		const wrapperMatch = classWrapper[0];
-		const valueMatchIndex = classWrapper.findIndex(
-			(match, idx) => idx !== 0 && match
-		);
-		const valueMatch = classWrapper[valueMatchIndex];
+function isArrayOfStrings(value: string | string[]): value is string[] {
+	return (
+		Array.isArray(value) && value.every((item) => typeof item === 'string')
+	);
+}
 
-		callback(classWrapper, wrapperMatch, valueMatch);
+export function buildRegexes(value: string | string[]): RegExp[] {
+	if (isArrayOfStrings(value)) {
+		return value.map((v) => new RegExp(v, 'gi'));
+	} else {
+		return [new RegExp(value, 'gi')];
+	}
+}
+
+export function getTextMatch(
+	regexes: RegExp[],
+	text: string,
+	callback: (text: string, startPosition: number) => void,
+	startPosition: number = 0
+): void {
+	if (regexes.length >= 1) {
+		let wrapper: RegExpExecArray | null;
+		while ((wrapper = regexes[0].exec(text)) !== null) {
+			const wrapperMatch = wrapper[0];
+			const valueMatchIndex = wrapper.findIndex(
+				(match, idx) => idx !== 0 && match
+			);
+			const valueMatch = wrapper[valueMatchIndex];
+
+			const newStartPosition =
+				startPosition + wrapper.index + wrapperMatch.lastIndexOf(valueMatch);
+
+			if (regexes.length === 1) {
+				callback(valueMatch, newStartPosition);
+			} else {
+				getTextMatch(regexes.slice(1), valueMatch, callback, newStartPosition);
+			}
+		}
 	}
 }

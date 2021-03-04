@@ -1,7 +1,7 @@
 'use strict';
 
 import { commands, workspace, ExtensionContext, Range, window } from 'vscode';
-import { sortClassString, getClassMatch } from './utils';
+import { sortClassString, getTextMatch, buildRegexes } from './utils';
 import { spawn } from 'child_process';
 import { rustyWindPath } from 'rustywind';
 
@@ -38,35 +38,31 @@ export function activate(context: ExtensionContext) {
 			const editorText = editor.document.getText();
 			const editorLangId = editor.document.languageId;
 
-			getClassMatch(
-				configRegex[editorLangId] || configRegex['html'],
-				editorText,
-				(classWrapper, wrapperMatch, valueMatch) => {
-					const startPosition =
-						classWrapper.index + wrapperMatch.lastIndexOf(valueMatch);
-					const endPosition = startPosition + valueMatch.length;
+			const regexes = buildRegexes(configRegex[editorLangId] || configRegex['html'])
 
-					const range = new Range(
-						editor.document.positionAt(startPosition),
-						editor.document.positionAt(endPosition)
-					);
+			getTextMatch(regexes, editorText, (text, startPosition) => {
+				const endPosition = startPosition + text.length;
+				const range = new Range(
+					editor.document.positionAt(startPosition),
+					editor.document.positionAt(endPosition)
+				);
 
-					const options = {
-						shouldRemoveDuplicates,
-						shouldPrependCustomClasses,
-						customTailwindPrefix,
-					};
+				const options = {
+					shouldRemoveDuplicates,
+					shouldPrependCustomClasses,
+					customTailwindPrefix,
+				};
 
-					edit.replace(
-						range,
-						sortClassString(
-							valueMatch,
-							Array.isArray(sortOrder) ? sortOrder : [],
-							options
-						)
-					);
-				}
-			);
+				edit.replace(
+					range,
+					sortClassString(
+						text,
+						Array.isArray(sortOrder) ? sortOrder : [],
+						options
+					)
+				);
+			});
+
 		}
 	);
 
