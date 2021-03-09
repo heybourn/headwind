@@ -1,6 +1,7 @@
 import { sortClassString, getTextMatch, buildMatchers } from '../src/utils';
 import 'jest';
 import * as _ from 'lodash';
+import { replace } from 'lodash';
 
 const pjson = require('../package.json');
 
@@ -42,6 +43,29 @@ describe('sortClassString', () => {
 		});
 		expect(result).toBe([customClass, ...sortOrder].join(' '));
 	});
+
+	it.each<[RegExp | undefined, string | undefined, string]>([
+		[undefined, undefined, ' '],
+		[/\+\+/g, undefined, '++'],
+		[undefined, ',', ' '],
+		[/\./g, '.', '.'],
+	])(
+		'should handle a `%s` class name separator with a `%s` class name separator replacement',
+		(separator, replacement, join) => {
+			const validClasses = sortOrder.filter((c) => !c.includes(join));
+			const randomizedClassString = _.shuffle(validClasses).join(join);
+
+			const result = sortClassString(randomizedClassString, sortOrder, {
+				shouldRemoveDuplicates: true,
+				shouldPrependCustomClasses: false,
+				customTailwindPrefix: '',
+				separator,
+				replacement,
+			});
+
+			expect(result).toBe(validClasses.join(replacement || ' '));
+		}
+	);
 });
 
 describe('removeDuplicates', () => {
