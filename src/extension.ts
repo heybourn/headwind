@@ -5,13 +5,14 @@ import { sortClassString, getTextMatch, buildMatchers } from './utils';
 import { spawn } from 'child_process';
 import { rustyWindPath } from 'rustywind';
 
-const config = workspace.getConfiguration();
 export type LangConfig =
 	| string
 	| string[]
 	| { regex?: string | string[]; separator?: string; replacement?: string }
 	| undefined;
-const configRegex: { [key: string]: LangConfig | LangConfig[] } =
+
+const config = workspace.getConfiguration();
+const langConfig: { [key: string]: LangConfig | LangConfig[] } =
 	config.get('headwind.classRegex') || {};
 
 const sortOrder = config.get('headwind.defaultSortOrder');
@@ -44,7 +45,7 @@ export function activate(context: ExtensionContext) {
 			const editorLangId = editor.document.languageId;
 
 			const matchers = buildMatchers(
-				configRegex[editorLangId] || configRegex['html']
+				langConfig[editorLangId] || langConfig['html']
 			);
 
 			for (const matcher of matchers) {
