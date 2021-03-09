@@ -98,7 +98,7 @@ function buildMatcher(value: LangConfig): Matcher {
 					: [],
 			separator:
 				typeof value.separator === 'string'
-					? new RegExp(value.separator)
+					? new RegExp(value.separator, 'g')
 					: undefined,
 			replacement: value.replacement || value.separator,
 		};
