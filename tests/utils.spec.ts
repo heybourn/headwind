@@ -1,4 +1,4 @@
-import { sortClassString, getTextMatch, buildRegexes } from '../src/utils';
+import { sortClassString, getTextMatch, buildMatchers } from '../src/utils';
 import 'jest';
 import * as _ from 'lodash';
 
@@ -259,7 +259,9 @@ describe('extract className (jsx) string with single regex', () => {
 			'(?:\\bclass(?:Name)?\\s*=[\\w\\d\\s_,{}()[\\]]*["\'`]([\\w\\d\\s_\\-:/${}]+)["\'`][\\w\\d\\s_,{}()[\\]]*)|(?:\\btw\\s*`([\\w\\d\\s_\\-:/]*)`)';
 		const callback = jest.fn();
 
-		getTextMatch(buildRegexes(stringRegex), editorText.toString(), callback);
+		for (const matcher of buildMatchers(stringRegex)) {
+			getTextMatch(matcher.regex, editorText.toString(), callback);
+		}
 
 		expect(callback).toHaveBeenCalledWith(
 			expectedTextMatch,
@@ -396,11 +398,9 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 		for (const jsxLanguage of jsxLanguages) {
 			const callback = jest.fn();
 
-			getTextMatch(
-				buildRegexes(configRegex[jsxLanguage]),
-				editorText.toString(),
-				callback
-			);
+			for (const matcher of buildMatchers(configRegex[jsxLanguage])) {
+				getTextMatch(matcher.regex, editorText.toString(), callback);
+			}
 
 			expect(callback).toHaveBeenCalledWith(
 				expectedTextMatch,
@@ -558,11 +558,9 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 		for (const jsxLanguage of jsxLanguages) {
 			const callback = jest.fn();
 
-			getTextMatch(
-				buildRegexes(configRegex[jsxLanguage]),
-				editorText.toString(),
-				callback
-			);
+			for (const matcher of buildMatchers(configRegex[jsxLanguage])) {
+				getTextMatch(matcher.regex, editorText.toString(), callback);
+			}
 
 			expect(callback).toHaveBeenCalledTimes(expectedResults.length);
 			expect(typeof expectedResults !== 'string').toBeTruthy();
@@ -632,11 +630,9 @@ describe('twin macro - extract tw prop (jsx) string(s) with multiple regexes', (
 		for (const jsxLanguage of jsxLanguages) {
 			const callback = jest.fn();
 
-			getTextMatch(
-				buildRegexes(configRegex[jsxLanguage]),
-				editorText.toString(),
-				callback
-			);
+			for (const matcher of buildMatchers(configRegex[jsxLanguage])) {
+				getTextMatch(matcher.regex, editorText.toString(), callback);
+			}
 
 			expect(callback).toHaveBeenCalledTimes(expectedResults.length);
 			expect(typeof expectedResults !== 'string').toBeTruthy();
