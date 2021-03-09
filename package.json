@@ -5016,6 +5016,14 @@
                     "headwind.classRegex": {
                         "type": "object",
                         "default": {
+                            "jade": [
+                                {
+                                    "regex": "\\.([\\._a-zA-Z0-9\\-]+)",
+                                    "separator": "\\.",
+                                    "replacement": "."
+                                },
+                                "\\bclass\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\']"
+                            ],
                             "html": "\\bclass\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\']",
                             "css": "\\B@apply\\s+([_a-zA-Z0-9\\s\\-\\:\\/]+);",
                             "javascript": [
