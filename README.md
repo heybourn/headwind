@@ -44,8 +44,8 @@ Example from `package.json`:
 
 ```json
 "headwind.classRegex": {
-		"html": "\\bclass\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\']",
-		"javascriptreact": "(?:\\bclassName\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])|(?:\\btw\\s*`([_a-zA-Z0-9\\s\\-\\:\\/]*)`)"
+    "html": "\\bclass\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\']",
+    "javascriptreact": "(?:\\bclassName\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])|(?:\\btw\\s*`([_a-zA-Z0-9\\s\\-\\:\\/]*)`)"
 }
 ```
 
@@ -57,10 +57,10 @@ Example from `package.json`:
 
 ```js
 "headwind.classRegex": {
-		"javascript": [
-				"(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]\"'`,]+)})|([\"'`][\\w\\d\\s_\\-:/]+[\"'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))",
-				"(?:[\"'`]([\\w\\d\\s_\\-:/${}()[\\]\"']+)[\"'`])"
-		],
+    "javascript": [
+        "(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]\"'`,]+)})|([\"'`][\\w\\d\\s_\\-:/]+[\"'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))",
+        "(?:[\"'`]([\\w\\d\\s_\\-:/${}()[\\]\"']+)[\"'`])"
+    ],
 }
 ```
 
@@ -80,14 +80,14 @@ Example from `package.json`:
 
 ```js
 "headwind.classRegex": {
-		"jade": [
-				{
-						"regex": "\\.([\\._a-zA-Z0-9\\-]+)",
-						"separator": "\\.",
-						"replacement": "."
-				},
-				"\\bclass\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\']"
-		],
+    "jade": [
+        {
+            "regex": "\\.([\\._a-zA-Z0-9\\-]+)",
+            "separator": "\\.",
+            "replacement": "."
+        },
+        "\\bclass\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\']"
+    ],
 }
 ```
 
@@ -97,12 +97,12 @@ To debug custom `classRegex`, you can use the code below:
 ```js
 // Your test string here
 const editorText = `
-	export const Layout = ({ children }) => (
-		<div class="h-screen">
-			<div className="w-64 h-full bg-blue-400 relative"></div>
-			<div>{children}</div>
-		</div>
-	)
+  export const Layout = ({ children }) => (
+    <div class="h-screen">
+      <div className="w-64 h-full bg-blue-400 relative"></div>
+      <div>{children}</div>
+    </div>
+  )
 `
 // Your Regex here
 const regex = /(?:\b(?:class|className)?\s*=\s*{?[\"\']([_a-zA-Z0-9\s\-\:/]+)[\"\']}?)/
@@ -110,14 +110,14 @@ const classWrapperRegex = new RegExp(regex, 'gi')
 
 let classWrapper
 while ((classWrapper = classWrapperRegex.exec(editorText)) !== null) {
-	const wrapperMatch = classWrapper[0]
-	const valueMatchIndex = classWrapper.findIndex((match, idx) => idx !== 0 && match)
-	const valueMatch = classWrapper[valueMatchIndex]
+  const wrapperMatch = classWrapper[0]
+  const valueMatchIndex = classWrapper.findIndex((match, idx) => idx !== 0 && match)
+  const valueMatch = classWrapper[valueMatchIndex]
 
-	console.log('classWrapper', classWrapper)
-	console.log('wrapperMatch', wrapperMatch)
-	console.log('valueMatchIndex', valueMatchIndex)
-	console.log('valueMatch', valueMatch)
+  console.log('classWrapper', classWrapper)
+  console.log('wrapperMatch', wrapperMatch)
+  console.log('valueMatchIndex', valueMatchIndex)
+  console.log('valueMatch', valueMatch)
 }
 ```
 
