@@ -4,10 +4,9 @@ import {
 	buildMatchers,
 	Matcher,
 } from '../src/utils';
+import { LangConfig } from '../src/extension';
 import 'jest';
 import * as _ from 'lodash';
-import { replace } from 'lodash';
-import { LangConfig } from '../src/extension';
 
 const pjson = require('../package.json');
 
