@@ -1,7 +1,13 @@
-import { sortClassString, getTextMatch, buildMatchers } from '../src/utils';
+import {
+	sortClassString,
+	getTextMatch,
+	buildMatchers,
+	Matcher,
+} from '../src/utils';
 import 'jest';
 import * as _ from 'lodash';
 import { replace } from 'lodash';
+import { LangConfig } from '../src/extension';
 
 const pjson = require('../package.json');
 
@@ -671,5 +677,132 @@ describe('twin macro - extract tw prop (jsx) string(s) with multiple regexes', (
 				});
 			}
 		}
+	});
+});
+
+describe('buildMatchers', () => {
+	it.only.each<[string, LangConfig | LangConfig[], Matcher[]]>([
+		['undefined', undefined, []],
+		['empty', [], []],
+		[
+			'layered regexes',
+			[
+				'(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]"\'`,]+)})|(["\'`][\\w\\d\\s_\\-:/]+["\'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))',
+				'(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+			],
+			[
+				{
+					regex: [
+						/(?:\bclass(?:Name)?\s*=\s*(?:{([\w\d\s_\-:/${}()[\]"'`,]+)})|(["'`][\w\d\s_\-:/]+["'`]))|(?:\btw\s*(`[\w\d\s_\-:/]+`))/gi,
+						/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi,
+					],
+				},
+			],
+		],
+		[
+			'multiple layered regexes',
+			[
+				[
+					'(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]"\'`,]+)})|(["\'`][\\w\\d\\s_\\-:/]+["\'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))',
+					'(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+				],
+				[
+					'(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]"\'`,]+)})|(["\'`][\\w\\d\\s_\\-:/]+["\'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))',
+					'(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+				],
+			],
+			[
+				{
+					regex: [
+						/(?:\bclass(?:Name)?\s*=\s*(?:{([\w\d\s_\-:/${}()[\]"'`,]+)})|(["'`][\w\d\s_\-:/]+["'`]))|(?:\btw\s*(`[\w\d\s_\-:/]+`))/gi,
+						/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi,
+					],
+				},
+				{
+					regex: [
+						/(?:\bclass(?:Name)?\s*=\s*(?:{([\w\d\s_\-:/${}()[\]"'`,]+)})|(["'`][\w\d\s_\-:/]+["'`]))|(?:\btw\s*(`[\w\d\s_\-:/]+`))/gi,
+						/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi,
+					],
+				},
+			],
+		],
+		[
+			'matcher',
+			{
+				regex: [
+					'(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]"\'`,]+)})|(["\'`][\\w\\d\\s_\\-:/]+["\'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))',
+					'(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+				],
+				separator: '\\+\\+',
+				replacement: '++',
+			},
+			[
+				{
+					regex: [
+						/(?:\bclass(?:Name)?\s*=\s*(?:{([\w\d\s_\-:/${}()[\]"'`,]+)})|(["'`][\w\d\s_\-:/]+["'`]))|(?:\btw\s*(`[\w\d\s_\-:/]+`))/gi,
+						/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi,
+					],
+					separator: /\+\+/g,
+					replacement: '++',
+				},
+			],
+		],
+		[
+			'empty matcher',
+			{},
+			[
+				{
+					regex: [],
+					separator: undefined,
+					replacement: undefined,
+				},
+			],
+		],
+		[
+			'various',
+			[
+				[
+					'(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]"\'`,]+)})|(["\'`][\\w\\d\\s_\\-:/]+["\'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))',
+				],
+				'(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+				{
+					regex: [
+						'(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]"\'`,]+)})|(["\'`][\\w\\d\\s_\\-:/]+["\'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))',
+						'(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+					],
+					replacement: ' ',
+				},
+				{
+					regex: '(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+					separator: '\\.',
+					replacement: '.',
+				},
+			],
+			[
+				{
+					regex: [
+						/(?:\bclass(?:Name)?\s*=\s*(?:{([\w\d\s_\-:/${}()[\]"'`,]+)})|(["'`][\w\d\s_\-:/]+["'`]))|(?:\btw\s*(`[\w\d\s_\-:/]+`))/gi,
+					],
+				},
+				{
+					regex: [/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi],
+				},
+				{
+					regex: [
+						/(?:\bclass(?:Name)?\s*=\s*(?:{([\w\d\s_\-:/${}()[\]"'`,]+)})|(["'`][\w\d\s_\-:/]+["'`]))|(?:\btw\s*(`[\w\d\s_\-:/]+`))/gi,
+						/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi,
+					],
+					separator: undefined,
+					replacement: ' ',
+				},
+				{
+					regex: [/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi],
+					separator: /\./g,
+					replacement: '.',
+				},
+			],
+		],
+	])('should handle %s configs', (_name, langConfig, matchers) => {
+		expect(buildMatchers(langConfig)).toStrictEqual(matchers);
 	});
 });

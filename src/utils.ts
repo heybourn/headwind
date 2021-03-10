@@ -106,11 +106,16 @@ function buildMatcher(value: LangConfig): Matcher {
 }
 
 export function buildMatchers(value: LangConfig | LangConfig[]): Matcher[] {
-	if (Array.isArray(value) && !isArrayOfStrings(value)) {
-		return value.map((v) => buildMatcher(v));
-	} else {
-		return [buildMatcher(value)];
+	if (value == undefined) {
+		return [];
+	} else if (Array.isArray(value)) {
+		if (!value.length) {
+			return [];
+		} else if (!isArrayOfStrings(value)) {
+			return value.map((v) => buildMatcher(v));
+		}
 	}
+	return [buildMatcher(value)];
 }
 
 export function getTextMatch(
