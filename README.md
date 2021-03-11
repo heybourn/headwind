@@ -44,8 +44,50 @@ Example from `package.json`:
 
 ```json
 "headwind.classRegex": {
-		"html": "\\bclass\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\']",
-		"javascriptreact": "(?:\\bclassName\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])|(?:\\btw\\s*`([_a-zA-Z0-9\\s\\-\\:\\/]*)`)"
+    "html": "\\bclass\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\']",
+    "javascriptreact": "(?:\\bclassName\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])|(?:\\btw\\s*`([_a-zA-Z0-9\\s\\-\\:\\/]*)`)"
+}
+```
+
+#### Multi-step Regex
+
+A multi-step regex can be specified by using an array of regexes to be executed in order.
+
+Example from `package.json`:
+
+```js
+"headwind.classRegex": {
+    "javascript": [
+        "(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]\"'`,]+)})|([\"'`][\\w\\d\\s_\\-:/]+[\"'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))",
+        "(?:[\"'`]([\\w\\d\\s_\\-:/${}()[\\]\"']+)[\"'`])"
+    ],
+}
+```
+
+The first regex will look for JSX `class` or `className` attributes or [twin.macro](https://github.com/ben-rogerson/twin.macro) usage.
+
+The second regex will then look for class names to be sorted within these matches.
+
+#### Configuration Object
+
+Optionally a configuration object can be passed to specify additional options for sorting class names.
+
+- `regex` - specifies the regex to be used to find class names
+- `separator` - regex pattern that is used to separate class names (default: `"\\s+"`)
+- `replacement` - string used to replace separator matches (default: `" "`)
+
+Example from `package.json`:
+
+```js
+"headwind.classRegex": {
+    "jade": [
+        {
+            "regex": "\\.([\\._a-zA-Z0-9\\-]+)",
+            "separator": "\\.",
+            "replacement": "."
+        },
+        "\\bclass\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\']"
+    ],
 }
 ```
 

@@ -1,7 +1,11 @@
+import { LangConfig } from './extension';
+
 export interface Options {
 	shouldRemoveDuplicates: boolean;
 	shouldPrependCustomClasses: boolean;
 	customTailwindPrefix: string;
+	separator?: RegExp;
+	replacement?: string;
 }
 
 /**
@@ -16,7 +20,7 @@ export const sortClassString = (
 	sortOrder: string[],
 	options: Options
 ): string => {
-	let classArray = classString.split(/\s+/g);
+	let classArray = classString.split(options.separator || /\s+/g);
 
 	if (options.shouldRemoveDuplicates) {
 		classArray = removeDuplicates(classArray);
@@ -36,7 +40,7 @@ export const sortClassString = (
 		options.shouldPrependCustomClasses
 	);
 
-	return classArray.join(' ');
+	return classArray.join(options.replacement || ' ');
 };
 
 const sortClassArray = (
@@ -59,18 +63,59 @@ const removeDuplicates = (classArray: string[]): string[] => [
 	...new Set(classArray),
 ];
 
-function isArrayOfStrings(value: string | string[]): value is string[] {
+function isArrayOfStrings(value: unknown): value is string[] {
 	return (
 		Array.isArray(value) && value.every((item) => typeof item === 'string')
 	);
 }
 
-export function buildRegexes(value: string | string[]): RegExp[] {
-	if (isArrayOfStrings(value)) {
-		return value.map((v) => new RegExp(v, 'gi'));
+export type Matcher = {
+	regex: RegExp[];
+	separator?: RegExp;
+	replacement?: string;
+};
+
+function buildMatcher(value: LangConfig): Matcher {
+	if (typeof value === 'string') {
+		return {
+			regex: [new RegExp(value, 'gi')],
+		};
+	} else if (isArrayOfStrings(value)) {
+		return {
+			regex: value.map((v) => new RegExp(v, 'gi')),
+		};
+	} else if (value == undefined) {
+		return {
+			regex: [],
+		};
 	} else {
-		return [new RegExp(value, 'gi')];
+		return {
+			regex:
+				typeof value.regex === 'string'
+					? [new RegExp(value.regex, 'gi')]
+					: isArrayOfStrings(value.regex)
+					? value.regex.map((v) => new RegExp(v, 'gi'))
+					: [],
+			separator:
+				typeof value.separator === 'string'
+					? new RegExp(value.separator, 'g')
+					: undefined,
+			replacement: value.replacement || value.separator,
+		};
 	}
+}
+
+export function buildMatchers(value: LangConfig | LangConfig[]): Matcher[] {
+	if (value == undefined) {
+		return [];
+	} else if (Array.isArray(value)) {
+		if (!value.length) {
+			return [];
+		} else if (!isArrayOfStrings(value)) {
+			return value.map((v) => buildMatcher(v));
+		}
+	}
+	return [buildMatcher(value)];
 }
 
 export function getTextMatch(

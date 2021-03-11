@@ -1,4 +1,10 @@
-import { sortClassString, getTextMatch, buildRegexes } from '../src/utils';
+import {
+	sortClassString,
+	getTextMatch,
+	buildMatchers,
+	Matcher,
+} from '../src/utils';
+import { LangConfig } from '../src/extension';
 import 'jest';
 import * as _ from 'lodash';
 
@@ -42,6 +48,29 @@ describe('sortClassString', () => {
 		});
 		expect(result).toBe([customClass, ...sortOrder].join(' '));
 	});
+
+	it.each<[RegExp | undefined, string | undefined, string]>([
+		[undefined, undefined, ' '],
+		[/\+\+/g, undefined, '++'],
+		[undefined, ',', ' '],
+		[/\./g, '.', '.'],
+	])(
+		'should handle a `%s` class name separator with a `%s` class name separator replacement',
+		(separator, replacement, join) => {
+			const validClasses = sortOrder.filter((c) => !c.includes(join));
+			const randomizedClassString = _.shuffle(validClasses).join(join);
+
+			const result = sortClassString(randomizedClassString, sortOrder, {
+				shouldRemoveDuplicates: true,
+				shouldPrependCustomClasses: false,
+				customTailwindPrefix: '',
+				separator,
+				replacement,
+			});
+
+			expect(result).toBe(validClasses.join(replacement || ' '));
+		}
+	);
 });
 
 describe('removeDuplicates', () => {
@@ -259,7 +288,9 @@ describe('extract className (jsx) string with single regex', () => {
 			'(?:\\bclass(?:Name)?\\s*=[\\w\\d\\s_,{}()[\\]]*["\'`]([\\w\\d\\s_\\-:/${}]+)["\'`][\\w\\d\\s_,{}()[\\]]*)|(?:\\btw\\s*`([\\w\\d\\s_\\-:/]*)`)';
 		const callback = jest.fn();
 
-		getTextMatch(buildRegexes(stringRegex), editorText.toString(), callback);
+		for (const matcher of buildMatchers(stringRegex)) {
+			getTextMatch(matcher.regex, editorText.toString(), callback);
+		}
 
 		expect(callback).toHaveBeenCalledWith(
 			expectedTextMatch,
@@ -396,11 +427,9 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 		for (const jsxLanguage of jsxLanguages) {
 			const callback = jest.fn();
 
-			getTextMatch(
-				buildRegexes(configRegex[jsxLanguage]),
-				editorText.toString(),
-				callback
-			);
+			for (const matcher of buildMatchers(configRegex[jsxLanguage])) {
+				getTextMatch(matcher.regex, editorText.toString(), callback);
+			}
 
 			expect(callback).toHaveBeenCalledWith(
 				expectedTextMatch,
@@ -558,11 +587,9 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 		for (const jsxLanguage of jsxLanguages) {
 			const callback = jest.fn();
 
-			getTextMatch(
-				buildRegexes(configRegex[jsxLanguage]),
-				editorText.toString(),
-				callback
-			);
+			for (const matcher of buildMatchers(configRegex[jsxLanguage])) {
+				getTextMatch(matcher.regex, editorText.toString(), callback);
+			}
 
 			expect(callback).toHaveBeenCalledTimes(expectedResults.length);
 			expect(typeof expectedResults !== 'string').toBeTruthy();
@@ -632,11 +659,9 @@ describe('twin macro - extract tw prop (jsx) string(s) with multiple regexes', (
 		for (const jsxLanguage of jsxLanguages) {
 			const callback = jest.fn();
 
-			getTextMatch(
-				buildRegexes(configRegex[jsxLanguage]),
-				editorText.toString(),
-				callback
-			);
+			for (const matcher of buildMatchers(configRegex[jsxLanguage])) {
+				getTextMatch(matcher.regex, editorText.toString(), callback);
+			}
 
 			expect(callback).toHaveBeenCalledTimes(expectedResults.length);
 			expect(typeof expectedResults !== 'string').toBeTruthy();
@@ -651,5 +676,132 @@ describe('twin macro - extract tw prop (jsx) string(s) with multiple regexes', (
 				});
 			}
 		}
+	});
+});
+
+describe('buildMatchers', () => {
+	it.only.each<[string, LangConfig | LangConfig[], Matcher[]]>([
+		['undefined', undefined, []],
+		['empty', [], []],
+		[
+			'layered regexes',
+			[
+				'(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]"\'`,]+)})|(["\'`][\\w\\d\\s_\\-:/]+["\'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))',
+				'(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+			],
+			[
+				{
+					regex: [
+						/(?:\bclass(?:Name)?\s*=\s*(?:{([\w\d\s_\-:/${}()[\]"'`,]+)})|(["'`][\w\d\s_\-:/]+["'`]))|(?:\btw\s*(`[\w\d\s_\-:/]+`))/gi,
+						/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi,
+					],
+				},
+			],
+		],
+		[
+			'multiple layered regexes',
+			[
+				[
+					'(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]"\'`,]+)})|(["\'`][\\w\\d\\s_\\-:/]+["\'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))',
+					'(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+				],
+				[
+					'(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]"\'`,]+)})|(["\'`][\\w\\d\\s_\\-:/]+["\'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))',
+					'(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+				],
+			],
+			[
+				{
+					regex: [
+						/(?:\bclass(?:Name)?\s*=\s*(?:{([\w\d\s_\-:/${}()[\]"'`,]+)})|(["'`][\w\d\s_\-:/]+["'`]))|(?:\btw\s*(`[\w\d\s_\-:/]+`))/gi,
+						/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi,
+					],
+				},
+				{
+					regex: [
+						/(?:\bclass(?:Name)?\s*=\s*(?:{([\w\d\s_\-:/${}()[\]"'`,]+)})|(["'`][\w\d\s_\-:/]+["'`]))|(?:\btw\s*(`[\w\d\s_\-:/]+`))/gi,
+						/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi,
+					],
+				},
+			],
+		],
+		[
+			'matcher',
+			{
+				regex: [
+					'(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]"\'`,]+)})|(["\'`][\\w\\d\\s_\\-:/]+["\'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))',
+					'(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+				],
+				separator: '\\+\\+',
+				replacement: '++',
+			},
+			[
+				{
+					regex: [
+						/(?:\bclass(?:Name)?\s*=\s*(?:{([\w\d\s_\-:/${}()[\]"'`,]+)})|(["'`][\w\d\s_\-:/]+["'`]))|(?:\btw\s*(`[\w\d\s_\-:/]+`))/gi,
+						/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi,
+					],
+					separator: /\+\+/g,
+					replacement: '++',
+				},
+			],
+		],
+		[
+			'empty matcher',
+			{},
+			[
+				{
+					regex: [],
+					separator: undefined,
+					replacement: undefined,
+				},
+			],
+		],
+		[
+			'various',
+			[
+				[
+					'(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]"\'`,]+)})|(["\'`][\\w\\d\\s_\\-:/]+["\'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))',
+				],
+				'(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+				{
+					regex: [
+						'(?:\\bclass(?:Name)?\\s*=\\s*(?:{([\\w\\d\\s_\\-:/${}()[\\]"\'`,]+)})|(["\'`][\\w\\d\\s_\\-:/]+["\'`]))|(?:\\btw\\s*(`[\\w\\d\\s_\\-:/]+`))',
+						'(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+					],
+					replacement: ' ',
+				},
+				{
+					regex: '(?:["\'`]([\\w\\d\\s_\\-:/${}()[\\]"\']+)["\'`])',
+					separator: '\\.',
+					replacement: '.',
+				},
+			],
+			[
+				{
+					regex: [
+						/(?:\bclass(?:Name)?\s*=\s*(?:{([\w\d\s_\-:/${}()[\]"'`,]+)})|(["'`][\w\d\s_\-:/]+["'`]))|(?:\btw\s*(`[\w\d\s_\-:/]+`))/gi,
+					],
+				},
+				{
+					regex: [/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi],
+				},
+				{
+					regex: [
+						/(?:\bclass(?:Name)?\s*=\s*(?:{([\w\d\s_\-:/${}()[\]"'`,]+)})|(["'`][\w\d\s_\-:/]+["'`]))|(?:\btw\s*(`[\w\d\s_\-:/]+`))/gi,
+						/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi,
+					],
+					separator: undefined,
+					replacement: ' ',
+				},
+				{
+					regex: [/(?:["'`]([\w\d\s_\-:/${}()[\]"']+)["'`])/gi],
+					separator: /\./g,
+					replacement: '.',
+				},
+			],
+		],
+	])('should handle %s configs', (_name, langConfig, matchers) => {
+		expect(buildMatchers(langConfig)).toStrictEqual(matchers);
 	});
 });

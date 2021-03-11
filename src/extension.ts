@@ -1,12 +1,18 @@
 'use strict';
 
 import { commands, workspace, ExtensionContext, Range, window } from 'vscode';
-import { sortClassString, getTextMatch, buildRegexes } from './utils';
+import { sortClassString, getTextMatch, buildMatchers } from './utils';
 import { spawn } from 'child_process';
 import { rustyWindPath } from 'rustywind';
 
+export type LangConfig =
+	| string
+	| string[]
+	| { regex?: string | string[]; separator?: string; replacement?: string }
+	| undefined;
+
 const config = workspace.getConfiguration();
-const configRegex: { [key: string]: string } =
+const langConfig: { [key: string]: LangConfig | LangConfig[] } =
 	config.get('headwind.classRegex') || {};
 
 const sortOrder = config.get('headwind.defaultSortOrder');
@@ -38,31 +44,36 @@ export function activate(context: ExtensionContext) {
 			const editorText = editor.document.getText();
 			const editorLangId = editor.document.languageId;
 
-			const regexes = buildRegexes(configRegex[editorLangId] || configRegex['html'])
+			const matchers = buildMatchers(
+				langConfig[editorLangId] || langConfig['html']
+			);
 
-			getTextMatch(regexes, editorText, (text, startPosition) => {
-				const endPosition = startPosition + text.length;
-				const range = new Range(
-					editor.document.positionAt(startPosition),
-					editor.document.positionAt(endPosition)
-				);
+			for (const matcher of matchers) {
+				getTextMatch(matcher.regex, editorText, (text, startPosition) => {
+					const endPosition = startPosition + text.length;
+					const range = new Range(
+						editor.document.positionAt(startPosition),
+						editor.document.positionAt(endPosition)
+					);
 
-				const options = {
-					shouldRemoveDuplicates,
-					shouldPrependCustomClasses,
-					customTailwindPrefix,
-				};
+					const options = {
+						shouldRemoveDuplicates,
+						shouldPrependCustomClasses,
+						customTailwindPrefix,
+						separator: matcher.separator,
+						replacement: matcher.replacement,
+					};
 
-				edit.replace(
-					range,
-					sortClassString(
-						text,
-						Array.isArray(sortOrder) ? sortOrder : [],
-						options
-					)
-				);
-			});
-
+					edit.replace(
+						range,
+						sortClassString(
+							text,
+							Array.isArray(sortOrder) ? sortOrder : [],
+							options
+						)
+					);
+				});
+			}
 		}
 	);
 
