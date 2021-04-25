@@ -1,0 +1,32 @@
+on:
+  push:
+    tags:
+      - "*"
+
+name: Build vsix
+
+jobs:
+  build:
+    name: Build vsix
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install
+        run: |
+          npm install
+          npm install -g vsce
+      - name: Build
+        run: |
+          vsce package
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          prerelease: true
+          fail_on_unmatched_files: true
+          files: |
+            *.vsix
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
