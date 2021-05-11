@@ -129,7 +129,7 @@ Good example value: `valueMatch w-64 h-full bg-blue-400 relative`
 
 <hr>
 
-### `headwind.sortTailwindClasses`:
+### `headwind.defaultSortOrder`:
 
 An array that determines Headwind's default sort order.
 
