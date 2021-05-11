@@ -40,7 +40,7 @@ export const sortClassString = (
 		options.shouldPrependCustomClasses
 	);
 
-	return classArray.join(options.replacement || ' ');
+	return classArray.join(options.replacement || ' ').trim();
 };
 
 const sortClassArray = (

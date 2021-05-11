@@ -112,13 +112,15 @@ describe('removeDuplicates', () => {
 describe('extract className (jsx) string with single regex', () => {
 	const classString = 'w-64 h-full bg-blue-400 relative';
 
-	const beforeText = `export const Layout = ({ children }) => (
-			<div>
+	const beforeText = `export const Layout = ({ children }) => {
+			const doNotSort = "hello flex";
+
+			return (<div>
 				<div className=`;
 	const afterText = `></div>
 				<div>{children}</div>
-			</div>
-		)`;
+			</div>)
+		}`;
 
 	const generateEditorText = (classNameString: string) =>
 		`${beforeText}${classNameString}${afterText}`;
@@ -313,14 +315,16 @@ describe('extract className (jsx) string(s) with multiple regexes', () => {
 	const classString = 'w-64 h-full bg-blue-400 relative';
 
 	const beforeText = `
-		export const Layout = ({ children }) => (
-			<div>
+		export const Layout = ({ children }) => {
+			const doNotSort = "hello flex";
+
+			return (<div>
 				<div className=`;
 
 	const afterText = `></div>
 				<div>{children}</div>
 			</div>
-		)`;
+		)}`;
 
 	const generateEditorText = (classNameString: string) =>
 		`${beforeText}${classNameString}${afterText}`;
@@ -680,7 +684,7 @@ describe('twin macro - extract tw prop (jsx) string(s) with multiple regexes', (
 });
 
 describe('buildMatchers', () => {
-	it.only.each<[string, LangConfig | LangConfig[], Matcher[]]>([
+	it.each<[string, LangConfig | LangConfig[], Matcher[]]>([
 		['undefined', undefined, []],
 		['empty', [], []],
 		[
