@@ -1,9 +1,9 @@
 'use strict';
 
-import { commands, workspace, ExtensionContext, Range, window } from 'vscode';
-import { sortClassString, getTextMatch, buildMatchers } from './utils';
 import { spawn } from 'child_process';
 import { rustyWindPath } from 'rustywind';
+import { commands, ExtensionContext, Range, window, workspace } from 'vscode';
+import { buildMatchers, getTextMatch, sortClassString } from './utils';
 
 export type LangConfig =
 	| string
@@ -16,6 +16,7 @@ const langConfig: { [key: string]: LangConfig | LangConfig[] } =
 	config.get('headwind.classRegex') || {};
 
 const sortOrder = config.get('headwind.defaultSortOrder');
+const variantSortOrder = config.get('headwind.defaultVariantSortOrder');
 
 const customTailwindPrefixConfig = config.get('headwind.customTailwindPrefix');
 const customTailwindPrefix =
@@ -69,6 +70,7 @@ export function activate(context: ExtensionContext) {
 						sortClassString(
 							text,
 							Array.isArray(sortOrder) ? sortOrder : [],
+							Array.isArray(variantSortOrder) ? variantSortOrder : [],
 							options
 						)
 					);

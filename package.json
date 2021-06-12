@@ -14,7 +14,7 @@
         "color": "#f1f5f8"
     },
     "icon": "icon.png",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "publisher": "heybourn",
     "license": "MIT",
     "author": "Ryan Heybourn <ryan@heybourn.com>",
@@ -54,6 +54,32 @@
             {
                 "title": "Headwind",
                 "properties": {
+                    "headwind.defaultVariantSortOrder": {
+                        "type": "array",
+                        "default": [
+                            "xs",
+                            "sm",
+                            "md",
+                            "lg",
+                            "xl",
+                            "2xl",
+                            "dark",
+                            "first",
+                            "last",
+                            "odd",
+                            "even",
+                            "visited",
+                            "checked",
+                            "group-hover",
+                            "group-focus",
+                            "focus-within",
+                            "hover",
+                            "focus",
+                            "focus-visible",
+                            "active",
+                            "disabled"
+                        ]
+                    },
                     "headwind.defaultSortOrder": {
                         "type": "array",
                         "default": [
