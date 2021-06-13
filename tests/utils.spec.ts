@@ -22,6 +22,21 @@ const randomizedClassStringWithCustom = _.shuffle([
 ]).join(' ');
 
 describe('sortClassString', () => {
+	it('sorts half classes properly', () => {
+		const result = sortClassString(
+			'mt-4 mb-0.5 flex inline-block inline px-0.5 pt-10 random-class justify-items absolute relative another-random-class',
+			sortOrder,
+			{
+				shouldRemoveDuplicates: true,
+				shouldPrependCustomClasses: false,
+				customTailwindPrefix: '',
+			}
+		);
+		expect(result).toBe(
+			'inline-block inline flex absolute relative px-0.5 pt-10 mt-4 mb-0.5 random-class justify-items another-random-class'
+		);
+	});
+
 	it('should return a sorted class list string', () => {
 		const result = sortClassString(randomizedClassString, sortOrder, {
 			shouldRemoveDuplicates: true,
