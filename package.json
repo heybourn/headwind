@@ -46,7 +46,7 @@
             {
                 "command": "headwind.sortTailwindClasses",
                 "key": "ctrl+alt+t",
-                "mac": "shift+cmd+t",
+                "mac": "shift+alt+t",
                 "when": "editorFocus"
             }
         ],
