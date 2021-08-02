@@ -20,7 +20,7 @@ You can install Headwind via the VS Code Marketplace, or package it yourself usi
 
 You can also trigger Headwind by:
 
-* Pressing CMD + Shift + T on Mac
+* Pressing ALT + Shift + T on Mac
 * Pressing CTRL + ALT + T on Windows
 * Pressing CTRL + ALT + T on Linux
 
