@@ -33,7 +33,7 @@ describe('sortClassString', () => {
 			}
 		);
 		expect(result).toBe(
-			'inline-block inline flex absolute relative px-0.5 pt-10 mt-4 mb-0.5 random-class justify-items another-random-class'
+			'inline-block inline flex absolute relative px-0.5 pt-10 mb-0.5 mt-4 random-class justify-items another-random-class'
 		);
 	});
 
