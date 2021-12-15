@@ -105,9 +105,9 @@ describe('removeDuplicates', () => {
 		expect(result).toBe(sortOrder.join(' '));
 	});
 
-	it('should remove not delete duplicate classes when flag is set', () => {
+	it('should not remove duplicate classes when flag is set', () => {
 		const randomizedAndDuplicatedClassString =
-			'container random random' + ' ' + _.shuffle(sortOrder).join(' ');
+			'aspect-auto random random' + ' ' + _.shuffle(sortOrder).join(' ');
 
 		const result = sortClassString(
 			randomizedAndDuplicatedClassString,
@@ -119,7 +119,7 @@ describe('removeDuplicates', () => {
 			}
 		);
 		expect(result).toBe(
-			['container', ...sortOrder, 'random', 'random'].join(' ')
+			["aspect-auto", ...sortOrder, 'random', 'random'].join(' ')
 		);
 	});
 });
