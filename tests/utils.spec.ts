@@ -86,6 +86,36 @@ describe('sortClassString', () => {
 			expect(result).toBe(validClasses.join(replacement || ' '));
 		}
 	);
+
+	it('should sort classes with modifiers independently and append those to sorted classes', () => {
+		const result = sortClassString(
+			'xl:mx-6 bg-gray-100 lg:mx-4 mt-1 sm:bg-gray-200 hover:bg-blue-100 lg:bg-gray-400 hover:text-blue-100 xl:bg-gray-600 sm:mx-2',
+			sortOrder,
+			{
+				shouldRemoveDuplicates: true,
+				shouldPrependCustomClasses: false,
+				customTailwindPrefix: '',
+			}
+		);
+		expect(result).toBe(
+			'mt-1 bg-gray-100 hover:text-blue-100 hover:bg-blue-100 sm:mx-2 sm:bg-gray-200 lg:mx-4 lg:bg-gray-400 xl:mx-6 xl:bg-gray-600'
+		);
+	});
+
+	it('should sort classes even if non-modifier classes are after modifier classes (issue #104)', () => {
+		const result = sortClassString(
+			'block w-full px-3 py-2 mb-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-blue-gray-500',
+			sortOrder,
+			{
+				shouldRemoveDuplicates: true,
+				shouldPrependCustomClasses: false,
+				customTailwindPrefix: '',
+			}
+		);
+		expect(result).toBe(
+			'block px-3 py-2 mb-2 w-full text-blue-gray-500 bg-white rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm'
+		);
+	})
 });
 
 describe('removeDuplicates', () => {
@@ -262,7 +292,7 @@ describe('extract className (jsx) string with single regex', () => {
 								}`),
 			classString,
 			startPosition +
-				`{ clsx(
+			`{ clsx(
 								    foo,
 								    bar,
 								    '`.length,
@@ -285,7 +315,7 @@ describe('extract className (jsx) string with single regex', () => {
 								  }`),
 			classString,
 			startPosition +
-				`{ clsx(
+			`{ clsx(
 									  foo,
 									  bar,
 									  "`.length,
