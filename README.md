@@ -132,6 +132,7 @@ Good example value: `valueMatch w-64 h-full bg-blue-400 relative`
 ### `headwind.defaultSortOrder`:
 
 An array that determines Headwind's default sort order.
+Please find the default settings in [package.json](https://github.com/heybourn/headwind/blob/master/package.json).
 
 ### `headwind.removeDuplicates`:
 
