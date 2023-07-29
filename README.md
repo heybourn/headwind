@@ -137,7 +137,7 @@ An array that determines Headwind's default sort order.
 
 Headwind will remove duplicate class names by default. This can be toggled on or off.
 
-`"headwind.removeDuplicates": false`
+`"headwind.removeDuplicates": true`
 
 ### `headwind.prependCustomClasses`:
 
@@ -149,7 +149,7 @@ Headwind will append custom class names by default. They can be prepended instea
 
 Headwind will run on save by default (if a `tailwind.config.js` file is present within your working directory). This can be toggled on or off.
 
-`"headwind.runOnSave": false`
+`"headwind.runOnSave": true`
 
 ## Contributing
 
